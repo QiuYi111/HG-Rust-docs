@@ -28,6 +28,6 @@ hg run answer --project .
 
 ## 观察什么
 
-删除路径上的文件不会删除 Head；`materialize` 可以恢复它。`invalidate` 不删除历史，而是让当前 Receipt 不再作为复用依据，下一次运行会产生新的 Attempt。
+删除路径上的文件不会删除 Head；`materialize` 可以恢复它。`invalidate` 保留历史，同时让当前 Receipt 失去复用资格，下一次运行会产生新的 Attempt。
 
 [返回案例库](index.md) · [下一个：失败与恢复](03-failure-resume.md)

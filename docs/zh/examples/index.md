@@ -1,4 +1,4 @@
-<div class="language-switch"><strong>中文</strong> · <a href="../../../en/examples/">English</a></div>
+<div class="language-switch"><strong>中文</strong> · <a href="../../en/examples/">English</a></div>
 
 # 案例库
 

@@ -84,4 +84,4 @@ hg migrate --check
 
 ## 事件与解释是一等结果
 
-当运行结果需要交接给另一位使用者或自动化系统时，优先保存 `status --output json`、相关 Event 和 Receipt 标识，而不是只保存一段终端文本。
+当运行结果需要交接给另一位使用者或自动化系统时，优先保存 `status --output json`、相关 Event 和 Receipt 标识。单独保存终端文本无法保留完整状态。

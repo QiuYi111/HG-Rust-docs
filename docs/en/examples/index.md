@@ -1,4 +1,4 @@
-<div class="language-switch"><a href="../../../zh/examples/">中文</a> · <strong>English</strong></div>
+<div class="language-switch"><a href="../../zh/examples/">中文</a> · <strong>English</strong></div>
 
 # Case library
 
