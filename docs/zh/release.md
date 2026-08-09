@@ -26,10 +26,10 @@
 - 显式网络策略下、由 macOS `sandbox-exec` 强制的精确主机 allowlist；其他平台在无法强制时拒绝启动；
 - `hg.real-world-report/v1` 真实案例报告。
 
-这些能力由 [Learning Helper](examples/17-learning-helper.md)、
-[Acquired Podcast](examples/18-acquired-podcast.md)、
-[Harness Lifecycle](examples/19-harness-lifecycle.md) 和
-[CAD Release](examples/20-cad-release.md) 共同验证。正式性能/成本校准与
+这些能力由 [Learning Helper](cases/learning-helper.md)、
+[Acquired Podcast](cases/acquired-podcast.md)、
+[Harness Lifecycle](cases/harness-lifecycle.md) 和
+[CAD Release](cases/cad-release.md) 共同验证。正式性能/成本校准与
 CI 调度不属于本次发布完成项。
 
 ## 兼容性约定

@@ -3,10 +3,10 @@
 <section class="hero" aria-labelledby="page-title">
   <p class="eyebrow">HARNESSGRAPH KERNEL · 0.1</p>
   <h1 id="page-title">Verifiable results for automation.</h1>
-  <p class="lede">HarnessGraph Kernel coordinates artifact-producing work through explicit dependencies, immutable history, reusable evidence, and explainable execution.</p>
+  <p class="lede">Start with four hands-on workflows. Learn how HG turns changing inputs, human decisions, Agents, tools, and checks into results you can hand over.</p>
   <div class="action-row">
-    <a class="md-button md-button--primary" href="zh/quick-start/">中文 Quick Start</a>
-    <a class="md-button" href="en/quick-start/">English Quick Start</a>
+    <a class="md-button md-button--primary" href="zh/cases/index.md">中文实操教程</a>
+    <a class="md-button" href="en/cases/index.md">English tutorials</a>
   </div>
 </section>
 
@@ -16,7 +16,8 @@
 
 ## Start here
 
-- [中文文档](zh/index.md)：完整的产品介绍、核心理念、配置参考、CLI、运维说明和 20 个案例。
-- [English documentation](en/index.md)：the complete English edition with the same structure and examples.
+- [四个实操教程](zh/cases/index.md)：从学习手册、播客制作、工程迭代和 CAD 发布开始，一步一步搭出真实工作流。
+- [Four hands-on tutorials](en/cases/index.md)：follow the same four workflows in English.
+- [Quick Start](zh/quick-start.md)：先用一个最小项目熟悉命令，再进入综合案例。
 
-HG-Rust is organized around a small author model: **Slot + Rule**. The kernel turns each accepted result into a versioned, explainable fact.
+HG-Rust is organized around a small author model. The tutorials introduce the technical names only when you need them, then show the result immediately.

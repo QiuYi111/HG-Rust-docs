@@ -87,7 +87,7 @@ When the input Revision and Rule contract are unchanged, the existing Receipt pr
 
 - Read [Core philosophy](principles.md) to understand the design.
 - Read the [Configuration reference](configuration-reference.md) to write a complete graph.
-- Choose a scenario from the [case library](examples/index.md) for approval, Agents, recovery, or concurrency.
+- Choose a complete workflow from the [four hands-on tutorials](cases/index.md) for approval, Agents, recovery, or concurrency.
 
 !!! note "Inputs and materialization"
 

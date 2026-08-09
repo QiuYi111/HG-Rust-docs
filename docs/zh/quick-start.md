@@ -87,7 +87,7 @@ hg run greeting --project .
 
 - 想理解设计取舍：阅读[核心哲学](principles.md)。
 - 想编写完整配置：阅读[配置参考](configuration-reference.md)。
-- 想处理失败、审批、Agent 或并发：从[案例库](examples/index.md)选择场景。
+- 想处理失败、审批、Agent 或并发：从[四个实操教程](cases/index.md)选择一个完整案例。
 
 !!! note "输入与结果的边界"
 

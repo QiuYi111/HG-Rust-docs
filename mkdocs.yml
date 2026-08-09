@@ -5,6 +5,50 @@ repo_name: QiuYi111/HG-Rust-docs
 repo_url: https://github.com/QiuYi111/HG-Rust-docs
 edit_uri: edit/main/docs/
 
+exclude_docs: |
+  en/examples/index.md
+  en/examples/01-hello-reconciliation.md
+  en/examples/02-cache-invalidate-repair.md
+  en/examples/03-failure-resume.md
+  en/examples/04-human-approval-effect.md
+  en/examples/05-agent-review-revise.md
+  en/examples/06-subgraph-project.md
+  en/examples/07-budget-and-cancel.md
+  en/examples/08-guards-conditional-flow.md
+  en/examples/09-audit-and-explain.md
+  en/examples/10-concurrent-workers-leases.md
+  en/examples/11-daemon-watch.md
+  en/examples/12-secure-agent-task.md
+  en/examples/13-feedback-loop.md
+  en/examples/14-hardware-project.md
+  en/examples/15-scientific-experiment.md
+  en/examples/16-dynamic-subgraph.md
+  en/examples/17-learning-helper.md
+  en/examples/18-acquired-podcast.md
+  en/examples/19-harness-lifecycle.md
+  en/examples/20-cad-release.md
+  zh/examples/index.md
+  zh/examples/01-hello-reconciliation.md
+  zh/examples/02-cache-invalidate-repair.md
+  zh/examples/03-failure-resume.md
+  zh/examples/04-human-approval-effect.md
+  zh/examples/05-agent-review-revise.md
+  zh/examples/06-subgraph-project.md
+  zh/examples/07-budget-and-cancel.md
+  zh/examples/08-guards-conditional-flow.md
+  zh/examples/09-audit-and-explain.md
+  zh/examples/10-concurrent-workers-leases.md
+  zh/examples/11-daemon-watch.md
+  zh/examples/12-secure-agent-task.md
+  zh/examples/13-feedback-loop.md
+  zh/examples/14-hardware-project.md
+  zh/examples/15-scientific-experiment.md
+  zh/examples/16-dynamic-subgraph.md
+  zh/examples/17-learning-helper.md
+  zh/examples/18-acquired-podcast.md
+  zh/examples/19-harness-lifecycle.md
+  zh/examples/20-cad-release.md
+
 theme:
   name: material
   language: zh
@@ -45,28 +89,15 @@ nav:
           - 配置总览: zh/configuration.md
           - 执行器与策略: zh/executors.md
           - 配置参考: zh/configuration-reference.md
-      - 案例库:
-          - 案例总览: zh/examples/index.md
-          - 01 · 最小协调: zh/examples/01-hello-reconciliation.md
-          - 02 · 缓存、失效与修复: zh/examples/02-cache-invalidate-repair.md
-          - 03 · 失败与恢复: zh/examples/03-failure-resume.md
-          - 04 · 人工审批与外部效果: zh/examples/04-human-approval-effect.md
-          - 05 · 评审与修订: zh/examples/05-agent-review-revise.md
-          - 06 · 子图: zh/examples/06-subgraph-project.md
-          - 07 · 预算与取消: zh/examples/07-budget-and-cancel.md
-          - 08 · 条件守卫: zh/examples/08-guards-conditional-flow.md
-          - 09 · 审计与解释: zh/examples/09-audit-and-explain.md
-          - 10 · 并发与租约: zh/examples/10-concurrent-workers-leases.md
-          - 11 · 守护进程与观察: zh/examples/11-daemon-watch.md
-          - 12 · 受限的代理任务: zh/examples/12-secure-agent-task.md
-          - 13 · 反馈循环: zh/examples/13-feedback-loop.md
-          - 14 · 硬件设计: zh/examples/14-hardware-project.md
-          - 15 · 科学实验: zh/examples/15-scientific-experiment.md
-          - 16 · 动态子图: zh/examples/16-dynamic-subgraph.md
-          - 17 · Learning Helper: zh/examples/17-learning-helper.md
-          - 18 · Acquired Podcast: zh/examples/18-acquired-podcast.md
-          - 19 · Harness Lifecycle: zh/examples/19-harness-lifecycle.md
-          - 20 · CAD Release: zh/examples/20-cad-release.md
+      - 四个实操教程:
+          - 教程总览: zh/cases/index.md
+          - Learning Helper: zh/cases/learning-helper.md
+          - Acquired Podcast: zh/cases/acquired-podcast.md
+          - Harness Lifecycle: zh/cases/harness-lifecycle.md
+          - CAD Release: zh/cases/cad-release.md
+          - 运行证据: zh/cases/evidence.md
+      - 功能参考与小例子:
+          - 参考总览: zh/examples/reference.md
       - 使用与参考:
           - CLI: zh/cli.md
           - 运行、恢复与审计: zh/operations.md
@@ -84,28 +115,15 @@ nav:
           - Configuration overview: en/configuration.md
           - Executors and policies: en/executors.md
           - Reference: en/configuration-reference.md
-      - Case library:
-          - Case overview: en/examples/index.md
-          - 01 · Minimal reconciliation: en/examples/01-hello-reconciliation.md
-          - 02 · Cache, invalidate, repair: en/examples/02-cache-invalidate-repair.md
-          - 03 · Failure and recovery: en/examples/03-failure-resume.md
-          - 04 · Human approval and effects: en/examples/04-human-approval-effect.md
-          - 05 · Review and revision: en/examples/05-agent-review-revise.md
-          - 06 · Subgraph: en/examples/06-subgraph-project.md
-          - 07 · Budgets and cancellation: en/examples/07-budget-and-cancel.md
-          - 08 · Conditional guards: en/examples/08-guards-conditional-flow.md
-          - 09 · Audit and explanation: en/examples/09-audit-and-explain.md
-          - 10 · Concurrency and leases: en/examples/10-concurrent-workers-leases.md
-          - 11 · Daemon and watch: en/examples/11-daemon-watch.md
-          - 12 · Constrained agent task: en/examples/12-secure-agent-task.md
-          - 13 · Feedback loop: en/examples/13-feedback-loop.md
-          - 14 · Hardware design: en/examples/14-hardware-project.md
-          - 15 · Scientific experiment: en/examples/15-scientific-experiment.md
-          - 16 · Dynamic subgraph: en/examples/16-dynamic-subgraph.md
-          - 17 · Learning Helper: en/examples/17-learning-helper.md
-          - 18 · Acquired Podcast: en/examples/18-acquired-podcast.md
-          - 19 · Harness Lifecycle: en/examples/19-harness-lifecycle.md
-          - 20 · CAD Release: en/examples/20-cad-release.md
+      - Four hands-on tutorials:
+          - Tutorial overview: en/cases/index.md
+          - Learning Helper: en/cases/learning-helper.md
+          - Acquired Podcast: en/cases/acquired-podcast.md
+          - Harness Lifecycle: en/cases/harness-lifecycle.md
+          - CAD Release: en/cases/cad-release.md
+          - Run evidence: en/cases/evidence.md
+      - Feature reference and small examples:
+          - Reference overview: en/examples/reference.md
       - Use and reference:
           - CLI: en/cli.md
           - Operations, recovery, and audit: en/operations.md

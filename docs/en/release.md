@@ -26,10 +26,10 @@ This site documents HarnessGraph Kernel 0.1 for users. The configuration format 
 - exact-host allowlists for explicit network policy, enforced by macOS `sandbox-exec`; other platforms reject execution when enforcement is unavailable;
 - `hg.real-world-report/v1` real-world case reports.
 
-These capabilities are exercised together by [Learning Helper](examples/17-learning-helper.md),
-[Acquired Podcast](examples/18-acquired-podcast.md),
-[Harness Lifecycle](examples/19-harness-lifecycle.md), and
-[CAD Release](examples/20-cad-release.md). Formal performance/cost calibration
+These capabilities are exercised together by [Learning Helper](cases/learning-helper.md),
+[Acquired Podcast](cases/acquired-podcast.md),
+[Harness Lifecycle](cases/harness-lifecycle.md), and
+[CAD Release](cases/cad-release.md). Formal performance/cost calibration
 and CI scheduling are not claimed as complete in this release.
 
 ## Compatibility conventions

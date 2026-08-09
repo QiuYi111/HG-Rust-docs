@@ -3,9 +3,9 @@
 <section class="hero" aria-labelledby="page-title">
   <p class="eyebrow">HARNESSGRAPH KERNEL · 0.1</p>
   <h1 id="page-title">Give automation results you can verify.</h1>
-  <p class="lede">HarnessGraph Kernel (HG-Rust) is an artifact-native reconciliation kernel. Use Slots for stable artifact names, Rules for transformations, and immutable Revisions, Receipts, and Events for every verifiable change.</p>
+  <p class="lede">Start with four workflows you can run. Learn how HG handles changing inputs, human decisions, Agents, external tools, and final acceptance.</p>
   <div class="action-row">
-    <a class="md-button md-button--primary" href="quick-start/">Start the Quick Start</a>
+    <a class="md-button md-button--primary" href="cases/index.md">Start the four tutorials</a>
     <a class="md-button" href="principles/">Read the core philosophy</a>
   </div>
 </section>
@@ -18,7 +18,7 @@
 
 ## What does HG-Rust solve
 
-Automation results change as requirements, source code, tests, reviews, Prompts, and external events change. After each run, a project still needs to know whether the result matches the latest facts, whether an old result is safe to reuse, which outputs were committed after a failure, and how to repair a hand-edited path.
+Automation results change as requirements, source material, reviews, and external events change. You need to know whether the current result uses the latest inputs, whether older work is still safe to reuse, which work survived a failure, and how to restore a hand-edited file.
 
 HG-Rust starts from the target Slot’s input closure and derives the Activations that need work. A result becomes a new Head only after validation, content-addressed storage, and fenced atomic commit. The kernel continues reconciling until the target reaches a fixed point or reports a clear terminal state.
 
@@ -50,17 +50,17 @@ Activation, Attempt, Receipt, Session, and Event each have a precise role. `stat
 
 </div>
 
-## How one reconciliation completes
+## Where to start
 
 <div class="diagram">
   <img src="../assets/core-loop.svg" alt="The reconciliation loop from a desired result through verification, versioning, and explanation" />
 </div>
 
-1. Declare Slots and Rules in `harness.yaml`.
-2. Import inputs as Source Revisions with `hg put`.
-3. Inspect the target closure and pending Activations with `hg plan`.
-4. Reconcile to a stable terminal state with `hg run`.
-5. Inspect results and causality with `hg status`, `hg explain`, and `hg events`.
+1. Read the [four hands-on tutorials](cases/index.md) and choose the closest delivery goal.
+2. Copy a case directory and run its contract profile first.
+3. Run the live profile when the configuration and inputs make sense.
+4. Change one input and watch HG repeat only the affected work.
+5. Use the [feature reference](examples/reference.md) when you need one capability.
 
 ## Two layers
 
@@ -87,7 +87,8 @@ If HG-Rust is new to you, follow this order.
 2. [Core philosophy](principles.md)  Understand Slots, Revisions, Receipts, and fixed points.
 3. [Object model](model.md)  Learn Activations, Attempts, Sessions, and Events.
 4. [Configuration overview](configuration.md)  Express the model in `harness.yaml`.
-5. [Case library](examples/index.md)  Study all 20 scenarios.
+5. [Four hands-on tutorials](cases/index.md)  Learn from a real delivery goal.
+6. [Feature reference and small examples](examples/reference.md)  Look up one capability when needed.
 
 !!! tip "A useful test"
 
