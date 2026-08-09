@@ -1,0 +1,61 @@
+site_name: HarnessGraph Kernel
+site_description: Public documentation for an artifact-native reconciliation kernel.
+site_url: https://qiyi111.github.io/HG-Rust-docs/
+repo_name: QiuYi111/HG-Rust-docs
+repo_url: https://github.com/QiuYi111/HG-Rust-docs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  font: false
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Overview:
+      - Public docs: index.md
+  - Learn:
+      - Concepts: concepts.md
+      - Quick start: quick-start.md
+      - CLI orientation: cli.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.keys
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: Copyright © 2026 QiuYi111
