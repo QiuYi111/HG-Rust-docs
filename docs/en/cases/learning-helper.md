@@ -4,7 +4,7 @@
 
 You have three source files for a course. You want one Word file with sources, an equation, and a checkable render. This case verifies file structure, the equation object, rendering, and re-computation after an input change. It does not evaluate whether the prose is suitable for real teaching.
 
-The complete case is in the [HG-Rust Learning Helper directory](https://github.com/QiuYi111/HG-Rust/tree/main/examples/real-world/learning-helper). The steps below map directly to its `harness.yaml` and input files.
+The complete case is in the [HG-Rust Learning Helper directory](https://github.com/QiuYi111/HG-Rust/tree/main/examples/real-world/learning-helper). The steps below first explain the fixed input → processing → output relationships, then show how to run the case verifier.
 
 <div class="diagram">
   <img src="../../assets/case-learning.svg" alt="Course sources pass through scope confirmation, separate distillation, and document checks into a Word handbook" />
@@ -57,33 +57,34 @@ HG_KEEP_RUN_ROOT=1 scripts/test-real-world-cases.sh learning-helper contract
 
 The runner submits this fixed response automatically and continues through the case. To try your own scope, copy the case into a project directory you choose and use `hg human decide --from <your-scope-file>`.
 
-## Step 3: process the three sources separately
+## Step 3: process the three sources with a fixed three-branch flow
 
-If one model call receives all three sources, a small change can make the whole handbook repeat its work. Here each source gets a separate fixed processing step, then a later step combines them. The case verifies the split and selective invalidation, not the quality of generated prose.
+If one model call receives all three sources, a small change can make the whole handbook repeat its work. Here the three processing relationships are written explicitly before a later step combines them. The current case has three fixed inputs, three fixed processing steps, and three fixed outputs. It does not select sources at runtime or rewrite the flow while it runs.
 
 ```yaml
 slots:
-  generated_graph: { kind: file, path: generated-distillation.yaml }
   knowledge_distillation: { kind: file, path: distillations/Knowledge.md }
   examples_distillation: { kind: file, path: distillations/Examples.md }
   expansion_distillation: { kind: file, path: distillations/Expansion.md }
 
 rules:
-  - id: plan_distillation
-    in: [scope]
-    out: [generated_graph]
-    run:
-      using: codex
-      model: gpt-5.6-luna
-      command: "Write the child graph definition to out/generated_graph"
-
   - id: distill_knowledge
-    in: [knowledge, generated_graph]
+    in: [knowledge]
     out: [knowledge_distillation]
-    run: { using: subgraph, command: "slot:generated_graph" }
+    run: "cp in/knowledge out/knowledge_distillation"
+
+  - id: distill_examples
+    in: [examples]
+    out: [examples_distillation]
+    run: "cp in/examples out/examples_distillation"
+
+  - id: distill_expansion
+    in: [expansion]
+    out: [expansion_distillation]
+    run: "cp in/expansion out/expansion_distillation"
 ```
 
-`generated_graph` is a versioned description of how to separate the source steps. Each step reads one source and does not share an untracked workspace. Changing `Expansion.md` therefore does not require the other two results to run again.
+This fixed graph is enough for the core problem in this case. Each step reads one source and does not share an untracked workspace. Changing `Expansion.md` therefore does not require the other two results to run again. The case verifies version tracking, cache reuse, and selective rework in a fixed flow; it does not verify automatic flow planning.
 
 ## Step 4: assemble the handbook and check the file
 

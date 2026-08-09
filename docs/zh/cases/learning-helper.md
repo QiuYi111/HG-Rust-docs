@@ -4,7 +4,7 @@
 
 你手里有一门课的三份资料。你想把它们放进一份有来源、有公式、能渲染的 Word 文件里。这个案例验证文件结构、公式对象、渲染和输入变化后的重新计算。它不评价手册内容是否适合真实教学。
 
-完整案例在 [HG-Rust 的 Learning Helper 目录](https://github.com/QiuYi111/HG-Rust/tree/main/examples/real-world/learning-helper)。下面的步骤可以直接对应目录里的 `harness.yaml` 和输入文件。
+完整案例在 [HG-Rust 的 Learning Helper 目录](https://github.com/QiuYi111/HG-Rust/tree/main/examples/real-world/learning-helper)。下面先用固定图讲清楚输入、处理和输出的关系，再带你运行案例验证程序。
 
 <div class="diagram">
   <img src="../../assets/case-learning.svg" alt="课程资料经过范围确认、分别整理、合并检查后生成 Word 手册" />
@@ -57,33 +57,34 @@ HG_KEEP_RUN_ROOT=1 scripts/test-real-world-cases.sh learning-helper contract
 
 运行器会自动完成这个固定响应，然后继续跑完整个案例。要测试自己的范围文件，请把案例复制到你选择的项目目录，再使用 `hg human decide --from <你的范围文件>`。
 
-## 第三步，三份资料分别处理
+## 第三步，按固定的三路流程分别处理
 
-如果把三份资料一次性塞给一个模型，任何一份小改动都可能让整本手册重跑。这里用三个按来源分开的步骤，再交给后面的合并步骤。本案例里的固定命令只验证这种拆分和选择性失效，不评价模型生成的文字质量。
+如果把三份资料一次性塞给一个模型，任何一份小改动都可能让整本手册重跑。这里直接把三条处理关系写清楚，再交给后面的合并步骤。本案例目前使用固定的三份输入、三个处理步骤和三个输出，不会在运行时自动选择资料，也不会临时改写流程结构。
 
 ```yaml
 slots:
-  generated_graph: { kind: file, path: generated-distillation.yaml }
   knowledge_distillation: { kind: file, path: distillations/Knowledge.md }
   examples_distillation: { kind: file, path: distillations/Examples.md }
   expansion_distillation: { kind: file, path: distillations/Expansion.md }
 
 rules:
-  - id: plan_distillation
-    in: [scope]
-    out: [generated_graph]
-    run:
-      using: codex
-      model: gpt-5.6-luna
-      command: "Write the child graph definition to out/generated_graph"
-
   - id: distill_knowledge
-    in: [knowledge, generated_graph]
+    in: [knowledge]
     out: [knowledge_distillation]
-    run: { using: subgraph, command: "slot:generated_graph" }
+    run: "cp in/knowledge out/knowledge_distillation"
+
+  - id: distill_examples
+    in: [examples]
+    out: [examples_distillation]
+    run: "cp in/examples out/examples_distillation"
+
+  - id: distill_expansion
+    in: [expansion]
+    out: [expansion_distillation]
+    run: "cp in/expansion out/expansion_distillation"
 ```
 
-`generated_graph` 是“接下来如何分开处理资料”的一份版本化配置。三个步骤各自读取一份资料，彼此没有共享未记录的工作区。只改 `Expansion.md` 时，另外两份结果可以继续使用。
+这张固定图已经足够解决本案例的核心问题。三个步骤各自读取一份资料，彼此没有共享未记录的工作区。只改 `Expansion.md` 时，另外两份结果可以继续使用。本案例验证的是固定流程下的版本记录、缓存复用和选择性重做，不是自动规划新流程。
 
 ## 第四步，把整理结果合成手册，再检查文件
 
