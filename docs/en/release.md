@@ -11,8 +11,9 @@ This site documents HarnessGraph Kernel 0.1 for users. The configuration format 
 - Revision, Head, Activation, Attempt, Receipt, Session, and Event.
 - Shell, Agent, Human, interactive-service, and Subgraph executor entry points.
 - Three-state Guards, execution budgets, network/secret declarations, and Effect idempotency/readback.
+- Cyclic feedback fixed points and dynamic subgraphs generated from a `GraphSpec` Revision.
 - Human, JSON, JSONL, event-following, drift repair, recovery, invalidation, and retry commands.
-- 15 scenarios from a minimal flow to domain examples.
+- 16 scenarios from a minimal flow through dynamic subgraphs and domain examples.
 
 ## Compatibility conventions
 

@@ -62,6 +62,7 @@ nav:
           - 13 · 反馈循环: zh/examples/13-feedback-loop.md
           - 14 · 硬件设计: zh/examples/14-hardware-project.md
           - 15 · 科学实验: zh/examples/15-scientific-experiment.md
+          - 16 · 动态子图: zh/examples/16-dynamic-subgraph.md
       - 使用与参考:
           - CLI: zh/cli.md
           - 运行、恢复与审计: zh/operations.md
@@ -96,6 +97,7 @@ nav:
           - 13 · Feedback loop: en/examples/13-feedback-loop.md
           - 14 · Hardware design: en/examples/14-hardware-project.md
           - 15 · Scientific experiment: en/examples/15-scientific-experiment.md
+          - 16 · Dynamic subgraph: en/examples/16-dynamic-subgraph.md
       - Use and reference:
           - CLI: en/cli.md
           - Operations, recovery, and audit: en/operations.md

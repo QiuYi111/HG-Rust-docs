@@ -19,7 +19,7 @@ Each case page includes:
 
 Copy a case into a fresh project, run `hg check --strict`, and then execute its target. Model identifiers and secret handles are placeholders and contain no credentials.
 
-## All 15 cases
+## All 16 cases
 
 | No. | Case | Focus |
 |---:|---|---|
@@ -35,8 +35,9 @@ Copy a case into a fresh project, run `hg check --strict`, and then execute its 
 | 10 | [Concurrency and leases](10-concurrent-workers-leases.md) | Fencing and safe commits |
 | 11 | [Daemon and watch](11-daemon-watch.md) | Background execution and events |
 | 12 | [Constrained agent task](12-secure-agent-task.md) | Network policy, secret handles, redaction |
-| 13 | [Feedback loop](13-feedback-loop.md) | Draft, critique, and revision |
+| 13 | [Feedback loop](13-feedback-loop.md) | Cyclic reconciliation, fixed points, stale-decision fencing |
 | 14 | [Hardware design](14-hardware-project.md) | Requirement, interface, test plan |
 | 15 | [Scientific experiment](15-scientific-experiment.md) | Data, observations, report, limitations |
+| 16 | [Dynamic subgraph](16-dynamic-subgraph.md) | GraphSpec Revisions and isolated child graphs |
 
 If you have not run HG-Rust before, complete the [Quick Start](../quick-start.md) first.

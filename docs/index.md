@@ -16,7 +16,7 @@
 
 ## Start here
 
-- [中文文档](zh/index.md)：完整的产品介绍、核心理念、配置参考、CLI、运维说明和 15 个案例。
+- [中文文档](zh/index.md)：完整的产品介绍、核心理念、配置参考、CLI、运维说明和 16 个案例。
 - [English documentation](en/index.md)：the complete English edition with the same structure and examples.
 
 HG-Rust is organized around a small author model: **Slot + Rule**. The kernel turns each accepted result into a versioned, explainable fact.

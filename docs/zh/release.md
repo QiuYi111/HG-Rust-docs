@@ -11,8 +11,9 @@
 - Revision、Head、Activation、Attempt、Receipt、Session 和 Event。
 - Shell、Agent、Human、交互服务和 Subgraph 执行器入口。
 - Guard 三态、执行预算、网络/秘密声明、Effect 幂等与回读。
+- 循环反馈固定点和通过 `GraphSpec` Revision 生成的动态子图。
 - JSON、JSONL、事件跟踪、漂移修复、恢复、失效和重试。
-- 15 个从最小流程到领域示例的案例。
+- 16 个从最小流程到动态子图和领域示例的案例。
 
 ## 兼容性约定
 

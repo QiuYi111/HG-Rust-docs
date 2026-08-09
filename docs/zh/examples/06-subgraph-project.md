@@ -1,8 +1,8 @@
 <div class="language-switch"><strong>中文</strong> · <a href="../../../en/examples/06-subgraph-project/">English</a></div>
 
-# 06 · 子图
+# 06 · 静态子图
 
-当一个流程需要独立维护时，可以让父图通过一个明确的 Slot 边界调用子图。父图只关心输入、输出和子图事件。
+当一个流程需要独立维护时，可以让父图通过一个明确的 Slot 边界调用固定子图。父图只关心输入、输出和子图事件。
 
 ## 父图
 
@@ -38,5 +38,7 @@ hg events --project . --output json
 ## 观察什么
 
 父图的事件流会记录子图运行。输入输出边界清晰时，团队可以分别理解和验证每个图。
+
+这个案例的子图配置路径固定在 Rule 中。需要让 Planner 生成 GraphSpec，再由通用执行器读取对应 Revision 时，请阅读[动态子图](16-dynamic-subgraph.md)。
 
 [返回案例库](index.md) · [下一个：预算与取消](07-budget-and-cancel.md)

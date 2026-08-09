@@ -19,7 +19,7 @@
 
 把案例复制到一个新的项目目录中，先运行 `hg check --strict`，再执行目标。示例中的模型标识和秘密句柄都是占位符，不包含任何访问凭证。
 
-## 15 个案例
+## 16 个案例
 
 | 编号 | 案例 | 重点 |
 |---:|---|---|
@@ -35,8 +35,9 @@
 | 10 | [并发与租约](10-concurrent-workers-leases.md) | fencing 与安全提交 |
 | 11 | [守护进程与观察](11-daemon-watch.md) | 后台运行和事件投影 |
 | 12 | [受限的代理任务](12-secure-agent-task.md) | 网络策略、秘密句柄和脱敏 |
-| 13 | [反馈循环](13-feedback-loop.md) | 草稿、批评、修订的多步闭环 |
+| 13 | [反馈循环](13-feedback-loop.md) | 循环协调、固定点和旧决定隔离 |
 | 14 | [硬件设计](14-hardware-project.md) | 需求、接口和测试计划 |
 | 15 | [科学实验](15-scientific-experiment.md) | 数据、观察、报告和局限 |
+| 16 | [动态子图](16-dynamic-subgraph.md) | GraphSpec Revision 和隔离子图 |
 
 如果还没有运行过 HG-Rust，请先完成 [Quick Start](../quick-start.md)。

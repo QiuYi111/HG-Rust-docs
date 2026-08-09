@@ -1,8 +1,8 @@
 <div class="language-switch"><a href="../../../zh/examples/06-subgraph-project/">中文</a> · <strong>English</strong></div>
 
-# 06 · Subgraph
+# 06 · Static subgraph
 
-When a flow needs an independent boundary, a parent graph can call a child graph through explicit Slot inputs and outputs. The parent records the subgraph event.
+When a flow needs an independent boundary, a parent graph can call a fixed child graph through explicit Slot inputs and outputs. The parent records the subgraph event.
 
 ## Parent graph
 
@@ -36,5 +36,7 @@ hg events --project . --output json
 ```
 
 The parent’s event stream records the child run. Clear input and output boundaries let teams understand and validate each graph independently.
+
+This case keeps the child graph path fixed in the Rule. When a Planner produces a GraphSpec and the generic executor reads its Revision, continue to [Dynamic subgraph](16-dynamic-subgraph.md).
 
 [Back to the case library](index.md) · [Next: Budgets and cancellation](07-budget-and-cancel.md)
