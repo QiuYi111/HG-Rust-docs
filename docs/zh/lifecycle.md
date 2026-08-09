@@ -28,6 +28,13 @@ Attempt 表示一次实际尝试，可能处于 `RUNNING`、`COMMITTING`、`SUCC
 
 多个 Worker 可以同时发现同一个目标，但只有持有当前租约并通过 fencing 检查的 Worker 才能提交 Head。这样可以避免旧 Worker 在新结果之后覆盖状态。
 
+`--jobs N` 设置最大并发容量。Runtime 会阻止 exclusive 输出 Slot 有 writer
+冲突的 Activation 同批执行，并在每个并行批次后重新建立 desired view。
+这使输出为 `NO_CHANGE` 的批次也不会跳过刚刚变得可运行的后继。
+
+Attempt 退出时会立即释放 fenced lease。并行路径中已经持久化的
+`CANCELLED` 终态不会再被随后到达的通用错误覆盖为 `FAILED`。
+
 <div class="diagram">
   <img src="../../assets/lease.svg" alt="两个 Worker 竞争租约，只有持有租约的 Worker 提交结果" />
 </div>

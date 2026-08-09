@@ -87,7 +87,7 @@ If HG-Rust is new to you, follow this order.
 2. [Core philosophy](principles.md)  Understand Slots, Revisions, Receipts, and fixed points.
 3. [Object model](model.md)  Learn Activations, Attempts, Sessions, and Events.
 4. [Configuration overview](configuration.md)  Express the model in `harness.yaml`.
-5. [Case library](examples/index.md)  Study all 16 scenarios.
+5. [Case library](examples/index.md)  Study all 20 scenarios.
 
 !!! tip "A useful test"
 

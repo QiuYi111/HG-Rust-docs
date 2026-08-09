@@ -13,7 +13,24 @@ This site documents HarnessGraph Kernel 0.1 for users. The configuration format 
 - Three-state Guards, execution budgets, network/secret declarations, and Effect idempotency/readback.
 - Cyclic feedback fixed points and dynamic subgraphs generated from a `GraphSpec` Revision.
 - Human, JSON, JSONL, event-following, drift repair, recovery, invalidation, and retry commands.
-- 16 scenarios from a minimal flow through dynamic subgraphs and domain examples.
+- 20 cases, including four real workflows with contract/live twins and common reports.
+
+## Kernel and case increment
+
+- bounded `hg run --jobs N` concurrency with same-batch writer-conflict protection for exclusive output Slots;
+- dual-pipe bounded capture and Unix process-group cancellation/timeout;
+- failed/orphan Attempt recovery, preserved cancellation state, and immediate lease release;
+- automatic Codex Executor checkpoint/resume, covered by executor/runtime regressions;
+- exact Human file Revisions with stale-Activation fencing;
+- materializable and cacheable Git Revision output;
+- exact-host allowlists for explicit network policy, enforced by macOS `sandbox-exec`; other platforms reject execution when enforcement is unavailable;
+- `hg.real-world-report/v1` real-world case reports.
+
+These capabilities are exercised together by [Learning Helper](examples/17-learning-helper.md),
+[Acquired Podcast](examples/18-acquired-podcast.md),
+[Harness Lifecycle](examples/19-harness-lifecycle.md), and
+[CAD Release](examples/20-cad-release.md). Formal performance/cost calibration
+and CI scheduling are not claimed as complete in this release.
 
 ## Compatibility conventions
 

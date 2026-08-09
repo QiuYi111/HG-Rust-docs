@@ -19,7 +19,7 @@ Each case page includes:
 
 Copy a case into a fresh project, run `hg check --strict`, and then execute its target. Model identifiers and secret handles are placeholders and contain no credentials.
 
-## All 16 cases
+## All 20 cases
 
 | No. | Case | Focus |
 |---:|---|---|
@@ -39,5 +39,14 @@ Copy a case into a fresh project, run `hg check --strict`, and then execute its 
 | 14 | [Hardware design](14-hardware-project.md) | Requirement, interface, test plan |
 | 15 | [Scientific experiment](15-scientific-experiment.md) | Data, observations, report, limitations |
 | 16 | [Dynamic subgraph](16-dynamic-subgraph.md) | GraphSpec Revisions and isolated child graphs |
+| 17 | [Learning Helper](17-learning-helper.md) | Dynamic subgraphs, selective invalidation, DOCX and OCR acceptance |
+| 18 | [Acquired Podcast](18-acquired-podcast.md) | Constrained research, concurrency, cancellation, and resume |
+| 19 | [Harness Lifecycle](19-harness-lifecycle.md) | Human fencing, role boundaries, Supervisor/worker, and Git Revision |
+| 20 | [CAD Release](20-cad-release.md) | Real CAD tools, independent review, local repair, and the G6 release gate |
+
+Cases 17–20 are executable real-world workflows from the implementation
+repository. Each has a deterministic contract twin, an unmocked live profile,
+and a common `hg.real-world-report/v1` output. The five-run live figures shown
+on their pages are current observations; formal budget calibration is deferred.
 
 If you have not run HG-Rust before, complete the [Quick Start](../quick-start.md) first.

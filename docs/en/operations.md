@@ -54,6 +54,33 @@ hg session close <SESSION_ID>
 
 Checkpoint and continuity support depend on the executor. Keeping Sessions, Attempts, and Events connected reduces guesswork when a long task must continue.
 
+The Codex Executor persists the real `thread.started` checkpoint and uses the
+current `codex exec resume` contract for continuation. A missing or invalid
+thread fails closed instead of silently creating a new session that only looks
+like a continuation.
+
+An active executor records checkpoints automatically. The current
+`session checkpoint` CLI returns `TEMPORARILY_UNAVAILABLE` when no live resident
+session is accessible.
+
+## Bounded concurrency and process termination
+
+```bash
+hg run report --jobs 3 --output json
+```
+
+`--jobs` is a maximum concurrency capacity. The Runtime prevents Activations
+with conflicting writers to exclusive output Slots from sharing a batch; the
+default remains serial. Shell and Agent stdout/stderr are
+drained concurrently into bounded, redacted tails. Cancellation or timeout
+terminates the Unix process group so descendants do not outlive their parent.
+
+A terminal Attempt releases its fenced lease immediately. Recovery repairs only
+orphan Attempts owned by terminal GraphRuns and does not steal active worker
+ownership.
+The current `hg resume` creates its child GraphRun with `max_concurrency: 1` and
+does not automatically inherit the original `--jobs N`.
+
 ## Human approval and external effects
 
 <div class="diagram">
@@ -70,6 +97,22 @@ Recommended sequence:
 ```bash
 hg effect verify <EFFECT_KEY>
 ```
+
+Long Human responses can be committed as exact file Revisions with
+`human decide --from <FILE>`. A decision is bound to an Activation; once inputs
+change, the old response cannot unlock the new work.
+
+## Git results and constrained network
+
+A Git output must be a clean worktree with a valid HEAD. HG preserves a mirror
+of the commit before committing its locator, so the result remains materializable
+and cacheable instead of pointing only to an ephemeral directory.
+
+Explicit network policy is currently enforced fail-closed with macOS
+`sandbox-exec`. Allow mode exposes only an exact-host
+filtering proxy; direct egress, redirects to undeclared hosts, and private-address
+resolution are denied. If enforcement is unavailable, the executor fails before
+starting the child process.
 
 ## Maintenance commands
 

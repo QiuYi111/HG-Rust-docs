@@ -90,3 +90,15 @@ session:
 ## 执行边界
 
 执行器只应把候选产物写入 `out/`。HG-Rust 会在提交前验证输出、检查写入冲突，并把日志中的已声明秘密替换为脱敏标记。
+
+Shell 与 Codex 子进程的 stdout/stderr 会被并发排空；每个 stream 只保留最新
+256 KiB 的脱敏尾部，避免子进程因任一管道塞满而死锁。Unix 取消/超时针对
+整个 process group，先请求终止并在宽限期后强制结束仍存活的进程。
+
+Codex 成功步骤必须提供真实 `thread.started` checkpoint；resume 使用当前
+`codex exec resume` 参数合约，缺失或无效的 thread 会成为可见失败。
+
+显式 `network` 策略当前由 macOS `sandbox-exec` 强制。allow 模式只暴露本地
+精确主机过滤代理，并拒绝直接出口、未允许的重定向和私网解析；其他平台在
+无法提供同等强制时会在启动子进程前失败。未声明显式策略的 Rule 不应被理解
+为自动获得这层隔离保证。

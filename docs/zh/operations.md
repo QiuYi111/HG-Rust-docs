@@ -54,6 +54,29 @@ hg session close <SESSION_ID>
 
 Session 是否支持 checkpoint 和连续执行取决于执行器。对于可恢复执行，保留 Session、Attempt 和 Event 的关联，可以减少“从哪里继续”的猜测。
 
+Codex Executor 会保存真实 `thread.started` checkpoint，并在继续执行时使用
+当前的 `codex exec resume` 合约。缺失或无效的 thread 会失败关闭，不会静默
+创建一个看似继续、实为全新的会话。
+
+checkpoint 由活跃执行器自动记录；当前 CLI 的 `session checkpoint` 在没有
+可访问的 live resident session 时会返回 `TEMPORARILY_UNAVAILABLE`。
+
+## 有界并发与进程停止
+
+```bash
+hg run report --jobs 3 --output json
+```
+
+`--jobs` 是最大并发容量；Runtime 会阻止 exclusive 输出 Slot 存在 writer
+冲突的 Activation 进入同一批次，默认值仍为串行。Shell/Agent 进程的 stdout
+与 stderr 被并发排空到有界、脱敏的尾部捕获。
+取消或超时会终止 Unix process group，因此子进程不会在父进程退出后继续运行。
+
+终止 Attempt 会立即释放带 fencing 的 lease。恢复逻辑只修复已终止 GraphRun
+拥有的孤儿 Attempt，不会把仍在运行的其他 worker 误判为孤儿。
+当前 `hg resume` 创建的子 GraphRun 使用 `max_concurrency: 1`，不会自动继承
+原运行的 `--jobs N`。
+
 ## 人工审批与外部效果
 
 <div class="diagram">
@@ -70,6 +93,18 @@ Session 是否支持 checkpoint 和连续执行取决于执行器。对于可恢
 ```bash
 hg effect verify <EFFECT_KEY>
 ```
+
+较长的人工响应可以用 `human decide --from <FILE>` 作为精确文件 Revision
+提交。决定绑定 Activation；输入变化后，旧响应不能解锁新工作。
+
+## Git 结果与受限网络
+
+Git 类型输出必须是有 HEAD 的干净工作树。HG 在提交 locator 前保存 commit
+镜像，因此结果能被物化和缓存，而不是只指向易失的临时目录。
+
+当前显式网络策略由 macOS `sandbox-exec` 强制并 fail-closed。allow 模式仅通过精确主机过滤代理提供网络；
+直接出口、重定向到未允许主机和解析到私网地址都被拒绝。没有可用的强制机制时，
+执行器会在启动子进程前失败。
 
 ## 维护命令
 

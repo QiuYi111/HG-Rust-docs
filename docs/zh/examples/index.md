@@ -19,7 +19,7 @@
 
 把案例复制到一个新的项目目录中，先运行 `hg check --strict`，再执行目标。示例中的模型标识和秘密句柄都是占位符，不包含任何访问凭证。
 
-## 16 个案例
+## 20 个案例
 
 | 编号 | 案例 | 重点 |
 |---:|---|---|
@@ -39,5 +39,14 @@
 | 14 | [硬件设计](14-hardware-project.md) | 需求、接口和测试计划 |
 | 15 | [科学实验](15-scientific-experiment.md) | 数据、观察、报告和局限 |
 | 16 | [动态子图](16-dynamic-subgraph.md) | GraphSpec Revision 和隔离子图 |
+| 17 | [Learning Helper](17-learning-helper.md) | 动态子图、选择性失效、DOCX 与 OCR 验收 |
+| 18 | [Acquired Podcast](18-acquired-podcast.md) | 受限网络研究、并发、取消与恢复 |
+| 19 | [Harness Lifecycle](19-harness-lifecycle.md) | Human fencing、角色边界、Supervisor/worker 与 Git Revision |
+| 20 | [CAD Release](20-cad-release.md) | 真实 CAD 工具、独立评审、局部修复与 G6 发布门 |
+
+17–20 是仓库随实现运行的真实案例：每个案例同时提供确定性的
+contract twin 和未 mock 外部边界的 live profile，并输出统一的
+`hg.real-world-report/v1` 报告。页面中的五次 live 数据是当前观测证据，
+正式预算校准仍待后续完成。
 
 如果还没有运行过 HG-Rust，请先完成 [Quick Start](../quick-start.md)。

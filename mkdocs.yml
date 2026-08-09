@@ -1,6 +1,6 @@
 site_name: HarnessGraph Kernel
 site_description: Official documentation for an artifact-native reconciliation kernel.
-site_url: https://qiyi111.github.io/HG-Rust-docs/
+site_url: https://qiuyi111.github.io/HG-Rust-docs/
 repo_name: QiuYi111/HG-Rust-docs
 repo_url: https://github.com/QiuYi111/HG-Rust-docs
 edit_uri: edit/main/docs/
@@ -63,6 +63,10 @@ nav:
           - 14 · 硬件设计: zh/examples/14-hardware-project.md
           - 15 · 科学实验: zh/examples/15-scientific-experiment.md
           - 16 · 动态子图: zh/examples/16-dynamic-subgraph.md
+          - 17 · Learning Helper: zh/examples/17-learning-helper.md
+          - 18 · Acquired Podcast: zh/examples/18-acquired-podcast.md
+          - 19 · Harness Lifecycle: zh/examples/19-harness-lifecycle.md
+          - 20 · CAD Release: zh/examples/20-cad-release.md
       - 使用与参考:
           - CLI: zh/cli.md
           - 运行、恢复与审计: zh/operations.md
@@ -98,6 +102,10 @@ nav:
           - 14 · Hardware design: en/examples/14-hardware-project.md
           - 15 · Scientific experiment: en/examples/15-scientific-experiment.md
           - 16 · Dynamic subgraph: en/examples/16-dynamic-subgraph.md
+          - 17 · Learning Helper: en/examples/17-learning-helper.md
+          - 18 · Acquired Podcast: en/examples/18-acquired-podcast.md
+          - 19 · Harness Lifecycle: en/examples/19-harness-lifecycle.md
+          - 20 · CAD Release: en/examples/20-cad-release.md
       - Use and reference:
           - CLI: en/cli.md
           - Operations, recovery, and audit: en/operations.md

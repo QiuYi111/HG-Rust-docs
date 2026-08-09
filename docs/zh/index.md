@@ -87,7 +87,7 @@ Activation、Attempt、Receipt、Session 和 Event 各自承担明确职责。`s
 2. [核心哲学](principles.md)  理解 Slot、Revision、Receipt 和固定点。
 3. [对象模型](model.md)  掌握 Activation、Attempt、Session 与 Event。
 4. [配置总览](configuration.md)  把模型写进 `harness.yaml`。
-5. [案例库](examples/index.md)  按场景阅读 16 个完整案例。
+5. [案例库](examples/index.md)  按场景阅读 20 个完整案例。
 
 !!! tip "一个简单判断"
 

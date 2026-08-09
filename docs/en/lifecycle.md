@@ -28,6 +28,15 @@ An Attempt can be `RUNNING`, `COMMITTING`, `SUCCEEDED`, `FAILED`, `CANCELLED`, o
 
 Several Workers may discover the same target at once, but only the Worker that owns the current lease and passes fencing may commit a Head. An old Worker cannot overwrite a newer result.
 
+`--jobs N` sets maximum concurrency. The Runtime prevents same-batch writer
+conflicts on exclusive output Slots and rebuilds the desired view after each
+parallel batch. A batch of `NO_CHANGE` outputs therefore cannot skip a successor
+that has just become runnable.
+
+An Attempt releases its fenced lease immediately on exit. A persisted
+`CANCELLED` terminal state in the parallel path is not overwritten by a later
+generic `FAILED` result.
+
 <div class="diagram">
   <img src="../../assets/lease.svg" alt="Two Workers compete for a lease and only the owner commits" />
 </div>

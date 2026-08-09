@@ -90,3 +90,18 @@ session:
 ## Execution boundaries
 
 Executors should write candidate artifacts only into `out/`. HG-Rust validates outputs, checks write conflicts, and replaces declared secret values with redaction markers in logs.
+
+Shell and Codex child stdout/stderr are drained concurrently. Only the newest
+256 KiB redacted tail of each stream is retained, preventing deadlock when one
+pipe fills. Unix cancellation/timeout targets the complete process group,
+requests termination first, and forcibly ends survivors after the grace period.
+
+A successful Codex step must provide a real `thread.started` checkpoint. Resume
+uses the current `codex exec resume` argument contract; a missing or invalid
+thread becomes a visible failure.
+
+Explicit `network` policy is currently enforced by macOS `sandbox-exec`. Allow
+mode exposes only a local exact-host filtering proxy and denies direct egress,
+undeclared redirects, and private-address resolution. Other platforms fail
+before child start when equivalent enforcement is unavailable. A Rule without
+explicit policy should not be read as automatically receiving this isolation.
