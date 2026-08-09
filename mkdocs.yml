@@ -1,5 +1,5 @@
 site_name: HarnessGraph Kernel
-site_description: Public documentation for an artifact-native reconciliation kernel.
+site_description: Official documentation for an artifact-native reconciliation kernel.
 site_url: https://qiyi111.github.io/HG-Rust-docs/
 repo_name: QiuYi111/HG-Rust-docs
 repo_url: https://github.com/QiuYi111/HG-Rust-docs
@@ -7,35 +7,99 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  language: en
+  language: zh
   font: false
   features:
     - navigation.sections
     - navigation.tabs
     - navigation.top
+    - navigation.indexes
     - search.highlight
     - search.suggest
     - content.code.copy
+    - content.action.edit
     - toc.follow
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
         icon: material/brightness-7
-        name: Switch to dark mode
+        name: 使用深色外观
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: 使用浅色外观
 
 nav:
-  - Overview:
-      - Public docs: index.md
-  - Learn:
-      - Concepts: concepts.md
-      - Quick start: quick-start.md
-      - CLI orientation: cli.md
+  - 中文:
+      - 产品介绍: zh/index.md
+      - Quick Start: zh/quick-start.md
+      - 核心模型:
+          - 核心哲学: zh/principles.md
+          - 与现有产品的对比: zh/comparison.md
+          - 对象模型: zh/model.md
+          - 执行生命周期: zh/lifecycle.md
+      - 配置:
+          - 配置总览: zh/configuration.md
+          - 执行器与策略: zh/executors.md
+          - 配置参考: zh/configuration-reference.md
+      - 案例库:
+          - 案例总览: zh/examples/index.md
+          - 01 · 最小协调: zh/examples/01-hello-reconciliation.md
+          - 02 · 缓存、失效与修复: zh/examples/02-cache-invalidate-repair.md
+          - 03 · 失败与恢复: zh/examples/03-failure-resume.md
+          - 04 · 人工审批与外部效果: zh/examples/04-human-approval-effect.md
+          - 05 · 评审与修订: zh/examples/05-agent-review-revise.md
+          - 06 · 子图: zh/examples/06-subgraph-project.md
+          - 07 · 预算与取消: zh/examples/07-budget-and-cancel.md
+          - 08 · 条件守卫: zh/examples/08-guards-conditional-flow.md
+          - 09 · 审计与解释: zh/examples/09-audit-and-explain.md
+          - 10 · 并发与租约: zh/examples/10-concurrent-workers-leases.md
+          - 11 · 守护进程与观察: zh/examples/11-daemon-watch.md
+          - 12 · 受限的代理任务: zh/examples/12-secure-agent-task.md
+          - 13 · 反馈循环: zh/examples/13-feedback-loop.md
+          - 14 · 硬件设计: zh/examples/14-hardware-project.md
+          - 15 · 科学实验: zh/examples/15-scientific-experiment.md
+      - 使用与参考:
+          - CLI: zh/cli.md
+          - 运行、恢复与审计: zh/operations.md
+          - 术语表: zh/glossary.md
+          - 发布说明: zh/release.md
+  - English:
+      - Product overview: en/index.md
+      - Quick Start: en/quick-start.md
+      - Core model:
+          - Philosophy: en/principles.md
+          - Comparison: en/comparison.md
+          - Object model: en/model.md
+          - Execution lifecycle: en/lifecycle.md
+      - Configuration:
+          - Configuration overview: en/configuration.md
+          - Executors and policies: en/executors.md
+          - Reference: en/configuration-reference.md
+      - Case library:
+          - Case overview: en/examples/index.md
+          - 01 · Minimal reconciliation: en/examples/01-hello-reconciliation.md
+          - 02 · Cache, invalidate, repair: en/examples/02-cache-invalidate-repair.md
+          - 03 · Failure and recovery: en/examples/03-failure-resume.md
+          - 04 · Human approval and effects: en/examples/04-human-approval-effect.md
+          - 05 · Review and revision: en/examples/05-agent-review-revise.md
+          - 06 · Subgraph: en/examples/06-subgraph-project.md
+          - 07 · Budgets and cancellation: en/examples/07-budget-and-cancel.md
+          - 08 · Conditional guards: en/examples/08-guards-conditional-flow.md
+          - 09 · Audit and explanation: en/examples/09-audit-and-explain.md
+          - 10 · Concurrency and leases: en/examples/10-concurrent-workers-leases.md
+          - 11 · Daemon and watch: en/examples/11-daemon-watch.md
+          - 12 · Constrained agent task: en/examples/12-secure-agent-task.md
+          - 13 · Feedback loop: en/examples/13-feedback-loop.md
+          - 14 · Hardware design: en/examples/14-hardware-project.md
+          - 15 · Scientific experiment: en/examples/15-scientific-experiment.md
+      - Use and reference:
+          - CLI: en/cli.md
+          - Operations, recovery, and audit: en/operations.md
+          - Glossary: en/glossary.md
+          - Release notes: en/release.md
 
 markdown_extensions:
   - admonition

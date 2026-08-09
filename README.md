@@ -1,14 +1,10 @@
-# HarnessGraph Kernel · Public Documentation
+# HarnessGraph Kernel documentation
 
-This repository is a public, documentation-only surface for HarnessGraph
-Kernel.
+This repository contains the official documentation website for HarnessGraph
+Kernel (HG-Rust). It is built with MkDocs Material and published with GitHub
+Pages.
 
-It intentionally contains no source code, private specifications, internal
-reviews, audit material, credentials, build artifacts, or links into a private
-implementation repository. The public site is built from the small allowlist
-of Markdown pages in `docs/`.
-
-Published site: <https://qiyi111.github.io/HG-Rust-docs/>
+Website: <https://qiyi111.github.io/HG-Rust-docs/>
 
 ## Local preview
 
@@ -17,5 +13,11 @@ python3 -m pip install -r requirements-docs.txt
 mkdocs serve
 ```
 
-The repository is designed for GitHub Pages and uses a strict documentation
-build before deployment.
+Run the same strict build used by continuous integration before publishing:
+
+```bash
+mkdocs build --strict --site-dir site
+```
+
+The site contains Chinese and English editions. Start with either language on
+the home page, then follow the Quick Start or the case library.
