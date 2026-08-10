@@ -1,57 +1,35 @@
-site_name: HarnessGraph Kernel
-site_description: Official documentation for an artifact-native reconciliation kernel.
+site_name: HarnessGraph
+site_description: Build an agent graph with two primitives.
 site_url: https://qiuyi111.github.io/HG-Rust-docs/
-repo_name: QiuYi111/HG-Rust-docs
-repo_url: https://github.com/QiuYi111/HG-Rust-docs
+repo_name: QiuYi111/HG-Rust
+repo_url: https://github.com/QiuYi111/HG-Rust
 edit_uri: edit/main/docs/
 
 exclude_docs: |
-  en/examples/index.md
-  en/examples/01-hello-reconciliation.md
-  en/examples/02-cache-invalidate-repair.md
-  en/examples/03-failure-resume.md
-  en/examples/04-human-approval-effect.md
-  en/examples/05-agent-review-revise.md
-  en/examples/06-subgraph-project.md
-  en/examples/07-budget-and-cancel.md
-  en/examples/08-guards-conditional-flow.md
-  en/examples/09-audit-and-explain.md
-  en/examples/10-concurrent-workers-leases.md
-  en/examples/11-daemon-watch.md
-  en/examples/12-secure-agent-task.md
-  en/examples/13-feedback-loop.md
-  en/examples/14-hardware-project.md
-  en/examples/15-scientific-experiment.md
-  en/examples/16-dynamic-subgraph.md
-  en/examples/17-learning-helper.md
-  en/examples/18-acquired-podcast.md
-  en/examples/19-harness-lifecycle.md
-  en/examples/20-cad-release.md
-  zh/examples/index.md
-  zh/examples/01-hello-reconciliation.md
-  zh/examples/02-cache-invalidate-repair.md
-  zh/examples/03-failure-resume.md
-  zh/examples/04-human-approval-effect.md
-  zh/examples/05-agent-review-revise.md
-  zh/examples/06-subgraph-project.md
-  zh/examples/07-budget-and-cancel.md
-  zh/examples/08-guards-conditional-flow.md
-  zh/examples/09-audit-and-explain.md
-  zh/examples/10-concurrent-workers-leases.md
-  zh/examples/11-daemon-watch.md
-  zh/examples/12-secure-agent-task.md
-  zh/examples/13-feedback-loop.md
-  zh/examples/14-hardware-project.md
-  zh/examples/15-scientific-experiment.md
-  zh/examples/16-dynamic-subgraph.md
-  zh/examples/17-learning-helper.md
-  zh/examples/18-acquired-podcast.md
-  zh/examples/19-harness-lifecycle.md
-  zh/examples/20-cad-release.md
+  en/cases/**
+  en/examples/**
+  en/cli.md
+  en/comparison.md
+  en/configuration-reference.md
+  en/executors.md
+  en/glossary.md
+  en/lifecycle.md
+  en/operations.md
+  zh/cases/**
+  zh/examples/**
+  zh/cli.md
+  zh/comparison.md
+  zh/configuration-reference.md
+  zh/executors.md
+  zh/glossary.md
+  zh/lifecycle.md
+  zh/operations.md
 
 theme:
   name: material
   language: zh
+  logo: assets/mark.svg
+  favicon: assets/mark.svg
   font: false
   features:
     - navigation.sections
@@ -61,74 +39,50 @@ theme:
     - search.highlight
     - search.suggest
     - content.code.copy
-    - content.action.edit
     - toc.follow
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: 使用深色外观
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: 使用浅色外观
+    scheme: default
 
 nav:
   - Home: index.md
   - 中文:
-      - 产品介绍: zh/index.md
+      - 项目首页: zh/index.md
+      - 核心哲学: zh/principles.md
       - Quick Start: zh/quick-start.md
       - 核心模型:
-          - 核心哲学: zh/principles.md
-          - 与现有产品的对比: zh/comparison.md
-          - 对象模型: zh/model.md
-          - 执行生命周期: zh/lifecycle.md
-      - 配置:
-          - 配置总览: zh/configuration.md
-          - 执行器与策略: zh/executors.md
-          - 配置参考: zh/configuration-reference.md
-      - 四个实操教程:
-          - 教程总览: zh/cases/index.md
-          - Learning Helper: zh/cases/learning-helper.md
-          - Acquired Podcast: zh/cases/acquired-podcast.md
-          - Harness Lifecycle: zh/cases/harness-lifecycle.md
-          - CAD Release: zh/cases/cad-release.md
-          - 运行证据: zh/cases/evidence.md
-      - 功能参考与小例子:
-          - 参考总览: zh/examples/reference.md
-      - 使用与参考:
-          - CLI: zh/cli.md
-          - 运行、恢复与审计: zh/operations.md
-          - 术语表: zh/glossary.md
-          - 发布说明: zh/release.md
+          - 两个原语: zh/model.md
+          - 图如何自然派生: zh/composition.md
+          - 配置与执行器: zh/configuration.md
+      - 教程案例:
+          - 案例路线: zh/tutorials/index.md
+          - 番茄钟: zh/tutorials/pomodoro.md
+          - Learning Helper: zh/tutorials/learning-helper.md
+          - Grill: zh/tutorials/grill.md
+          - Acquired: zh/tutorials/acquired.md
+          - Harness Lifecycle: zh/tutorials/harness.md
+          - CAD Release: zh/tutorials/cad-release.md
+      - 图语义实验室: zh/graph-lab.md
+      - CLI 与运行: zh/reference.md
+      - 发布说明: zh/release.md
   - English:
-      - Product overview: en/index.md
+      - Project home: en/index.md
+      - Core philosophy: en/principles.md
       - Quick Start: en/quick-start.md
       - Core model:
-          - Philosophy: en/principles.md
-          - Comparison: en/comparison.md
-          - Object model: en/model.md
-          - Execution lifecycle: en/lifecycle.md
-      - Configuration:
-          - Configuration overview: en/configuration.md
-          - Executors and policies: en/executors.md
-          - Reference: en/configuration-reference.md
-      - Four hands-on tutorials:
-          - Tutorial overview: en/cases/index.md
-          - Learning Helper: en/cases/learning-helper.md
-          - Acquired Podcast: en/cases/acquired-podcast.md
-          - Harness Lifecycle: en/cases/harness-lifecycle.md
-          - CAD Release: en/cases/cad-release.md
-          - Run evidence: en/cases/evidence.md
-      - Feature reference and small examples:
-          - Reference overview: en/examples/reference.md
-      - Use and reference:
-          - CLI: en/cli.md
-          - Operations, recovery, and audit: en/operations.md
-          - Glossary: en/glossary.md
-          - Release notes: en/release.md
+          - Two primitives: en/model.md
+          - How graphs emerge: en/composition.md
+          - Configuration and executors: en/configuration.md
+      - Tutorials:
+          - Learning path: en/tutorials/index.md
+          - Pomodoro: en/tutorials/pomodoro.md
+          - Learning Helper: en/tutorials/learning-helper.md
+          - Grill: en/tutorials/grill.md
+          - Acquired: en/tutorials/acquired.md
+          - Harness Lifecycle: en/tutorials/harness.md
+          - CAD Release: en/tutorials/cad-release.md
+      - Graph semantics lab: en/graph-lab.md
+      - CLI and operations: en/reference.md
+      - Release notes: en/release.md
 
 markdown_extensions:
   - admonition
@@ -140,10 +94,9 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
-  - pymdownx.keys
   - pymdownx.superfences
-  - pymdownx.tasklist:
-      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
 
 plugins:
   - search
@@ -151,4 +104,7 @@ plugins:
 extra_css:
   - stylesheets/extra.css
 
-copyright: Copyright © 2026 QiuYi111
+extra:
+  generator: false
+
+copyright: Copyright © 2026 HarnessGraph contributors

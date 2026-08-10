@@ -1,83 +1,44 @@
-<div class="language-switch"><strong>中文</strong> · <a href="../../en/configuration/">English</a></div>
+# 配置与执行器
 
-# 配置总览
+先写最小的 Slot 与 Rule，只有遇到真实约束时再加入策略。这样更容易看清图的依赖，也更接近 HarnessGraph 的作者模型。
 
-项目配置文件名为 `harness.yaml`，版本字段目前为 `1`。配置分为项目元数据、Slot 和 Rule 三层。
-
-## 最小结构
+## 最小配置
 
 ```yaml
 version: 1
 project:
-  name: report-project
-  default_targets: [report]
-
+  name: hello-reconciliation
+  default_targets: [greeting]
 slots:
   request: { kind: file, path: request.txt }
-  report: { kind: file, path: report.md }
-
+  greeting: { kind: file, path: greeting.md }
 rules:
-  - id: make_report
+  - id: greet
     in: [request]
-    out: [report]
-    run: "cp in/request out/report"
+    out: [greeting]
+    run: "{ printf '# Hello\\n\\n'; cat in/request; } > out/greeting"
 ```
 
-### `version`
+## Slot 类型
 
-配置格式版本。当前填写 `1`。
+单个文件使用 `file`，目录树使用 `dir`。需要提交身份和历史时，选择 `git`。`path` 是物化路径，不是运行时工作目录。
 
-### `project`
+## Rule 策略
 
-`name` 是项目名称；`default_targets` 是未在命令行传入目标时使用的 Slot 列表。
-
-### `slots`
-
-每个 Slot 至少需要 `kind`。常见配置如下：
+`permissions` 声明网络与 secret 边界。`limits` 控制超时和最大尝试次数。`session` 决定 Agent 会话是否复用。`when` 表达当前输入上的资格判断。
 
 ```yaml
-slots:
-  document: { kind: file, path: docs/document.md }
-  assets: { kind: dir, path: build/assets }
-  source_tree: { kind: git, path: . }
-  feed: { kind: stream }
-  binary: { kind: opaque, path: build/app.bin }
+permissions: { network: none, secrets: [] }
+limits: { timeout: 900, max_attempts: 2 }
+session: { policy: reuse, scope: project }
 ```
 
-支持的 `kind` 为 `file`、`dir`、`git`、`stream` 和 `opaque`。系统不会根据扩展名猜测类型。
+这些字段约束执行，不改变 Slot 与 Rule 之间的依赖。
 
-### `rules`
+## Executor ABI
 
-每个 Rule 需要 `id`、`in`、`out` 和 `run`。`run` 可以是字符串形式的 Shell 命令，也可以是带执行器参数的映射。
+执行器看到统一的会话目录。输入挂载在 `in/`，Rule 只能把声明过的结果写到 `out/`。内核检查输出后再提交 Revision。
 
-## 输入、输出与执行目录
+Shell 最适合确定性工具。Codex 等 Agent 执行器适合开放式语义任务。Human 执行器适合需要人承担责任的决定。选择执行器时先看任务性质，再看是否需要网络、凭据、长会话或外部副作用。
 
-执行器会得到一个隔离的工作目录：
-
-```text
-workspace/
-├── in/       # 当前输入 Slot
-├── out/      # 只允许写入候选输出
-└── execution.json
-```
-
-Shell Rule 通常从 `in/<slot>` 读取，并写入 `out/<slot>`。只有候选输出通过验证和提交后，才会成为新的 Revision。
-
-## 让配置先通过检查
-
-```bash
-hg check --project . --strict
-hg fmt --project . --check
-```
-
-检查阶段会发现未知执行器、重复 ID、缺少 `kind`、无效的策略值和不符合约定的 YAML 结构。
-
-## 配置设计建议
-
-- Slot 名称使用稳定、可读的业务名，不要把临时文件名当作模型名称。
-- 一个 Rule 尽量表达一个可验证的转换，便于定位失败和复用结果。
-- 先用 `shell` 完成确定性验证，再为需要推理或人工判断的步骤选择其他执行器。
-- 外部动作单独建 Rule，并配置幂等键与 readback。
-- 给长任务配置 `limits`，给敏感任务配置 `permissions`。
-
-下一步阅读[执行器与策略](executors.md)或[配置参考](configuration-reference.md)。
+完整命令见 [CLI 与运行](reference.md)。真实配置可以直接查看 [案例路线](tutorials/index.md) 中链接的 `harness.yaml`。
