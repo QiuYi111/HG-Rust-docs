@@ -1,0 +1,212 @@
+version: 1
+project:
+  name: acquired-podcast
+  default_targets: [audio_manifest_host, audio_manifest_guest]
+slots:
+  topic_prompt: { kind: file, path: fixtures/topic.md }
+  gate_request: { kind: file, path: fixtures/gate-request.json }
+  topic: { kind: file, path: topic.md }
+  origins: { kind: file, path: research/origins.json }
+  business_model: { kind: file, path: research/business-model.json }
+  product: { kind: file, path: research/product.json }
+  competition: { kind: file, path: research/competition.json }
+  leadership: { kind: file, path: research/leadership.json }
+  inflections: { kind: file, path: research/inflections.json }
+  research_gate: { kind: file, path: research-gate.json }
+  supplement: { kind: file, path: research/supplement.json }
+  meeting: { kind: file, path: production-meeting.md }
+  act_one: { kind: file, path: script/act-one.md }
+  act_two: { kind: file, path: script/act-two.md }
+  act_three: { kind: file, path: script/act-three.md }
+  draft_script: { kind: file, path: episode-draft.md }
+  script: { kind: file, path: episode.md }
+  qa: { kind: file, path: fixtures/qa.bootstrap.json }
+  qa_result: { kind: file, path: qa.json }
+  audio_manifest_host: { kind: file, path: audio-director-host.json }
+  audio_manifest_guest: { kind: file, path: audio-director-guest.json }
+rules:
+  - id: choose_topic
+    in: [topic_prompt]
+    out: [topic]
+    run: { using: human, command: "Approve the exact company topic file" }
+  - id: research_origins
+    in: [topic]
+    out: [origins]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Research the origins and founding history of the company named in
+        in/topic using live web sources. Write only out/origins as JSON with
+        dimension, summary, claims, and sources. sources must contain at least
+        two objects with url, title, retrieved_at, and evidence fields. Every
+        material claim must be supported by those sources; do not use prior
+        knowledge as unrecorded evidence.
+  - id: research_business_model
+    in: [topic]
+    out: [business_model]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Research how the company in in/topic makes money, allocates capital,
+        and reports its operating segments using live web sources. Write only
+        out/business_model as JSON with dimension, summary, claims, and sources.
+        sources must contain at least two objects with url, title, retrieved_at,
+        and evidence fields. Bind every claim to recorded evidence.
+  - id: research_product
+    in: [topic]
+    out: [product]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Research the company's principal products, services, and customer value
+        from live web sources. Write only out/product as JSON with dimension,
+        summary, claims, and sources. sources must contain at least two objects
+        with url, title, retrieved_at, and evidence fields. Do not emit an
+        unsupported product list.
+  - id: research_competition
+    in: [topic]
+    out: [competition]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Research the company's competitive landscape and defensibility using
+        live web sources. Write only out/competition as JSON with dimension,
+        summary, claims, and sources. sources must contain at least two objects
+        with url, title, retrieved_at, and evidence fields. Separate sourced
+        facts from analysis.
+  - id: research_leadership
+    in: [topic]
+    out: [leadership]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Research the leadership history, governance, and succession of the
+        company in in/topic using live web sources. Write only out/leadership as
+        JSON with dimension, summary, claims, and sources. sources must contain
+        at least two objects with url, title, retrieved_at, and evidence fields.
+  - id: research_inflections
+    in: [topic]
+    out: [inflections]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Research the decisive strategic inflection points in the company's
+        history using live web sources. Write only out/inflections as JSON with
+        dimension, summary, claims, and sources. sources must contain at least
+        two objects with url, title, retrieved_at, and evidence fields, and each
+        inflection must include a date and sourced consequence.
+  - id: supplement_competition
+    in: [topic, competition, gate_request]
+    out: [supplement]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Read in/gate_request and in/competition, perform the requested targeted
+        follow-up research about in/topic, and write only out/supplement as JSON
+        with status equal to complete, dimension, request, findings, and sources.
+        sources must contain at least two source objects with URLs and evidence.
+  - id: review_research
+    in: [origins, business_model, product, competition, leadership, inflections, supplement, gate_request]
+    out: [research_gate]
+    run: >-
+      for artifact in in/origins in/business_model in/product in/competition in/leadership in/inflections;
+      do jq -e '(.sources | length) >= 2 and (.summary | length) > 0' "$artifact" >/dev/null || exit 1; done;
+      jq -e '.status == "complete" and (.sources | length) >= 2' in/supplement >/dev/null;
+      jq -n --arg request "$(jq -r '.request' in/gate_request)"
+      '{decision:"accept",round:2,request:$request}' > out/research_gate
+  - id: production_meeting
+    in: [topic, origins, business_model, product, competition, leadership, inflections, supplement, research_gate]
+    out: [meeting]
+    when: "test \"$(jq -r '.decision' research_gate)\" = accept"
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Synthesize the accepted source-backed research in the declared inputs.
+        Write only out/meeting as a three-act production brief with the central
+        thesis, narrative tension, evidence assigned to each act, and source
+        URLs beside the claims they support.
+  - id: write_act_one
+    in: [meeting, origins, business_model]
+    out: [act_one]
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Write only out/act_one from the supplied production brief, origins, and
+        business-model evidence. Preserve source URLs inline and distinguish
+        narration from host dialogue.
+  - id: write_act_two
+    in: [meeting, product, competition]
+    out: [act_two]
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Write only out/act_two from the supplied production brief, product, and
+        competition evidence. Preserve source URLs inline and build the central
+        strategic tension without inventing facts.
+  - id: write_act_three
+    in: [meeting, leadership, inflections]
+    out: [act_three]
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Write only out/act_three from the supplied production brief, leadership,
+        and inflection evidence. Preserve source URLs inline and close the thesis
+        with sourced consequences.
+  - id: assemble_episode
+    in: [act_one, act_two, act_three]
+    out: [draft_script]
+    run: "cat in/act_one in/act_two in/act_three > out/draft_script"
+  - id: revise_episode
+    in: [draft_script, qa]
+    out: [script]
+    when: "decision=$(jq -r '.decision' qa); test \"$decision\" = pending || test \"$decision\" = revise"
+    run: "{ cat in/draft_script; printf '\nRevision applied: source transitions verified.\n'; } > out/script"
+  - id: qa_episode
+    in: [script, qa]
+    out: [qa_result]
+    run: >-
+      if grep -Eq 'https?://' in/script && grep -q 'Revision applied' in/script;
+      then printf '{"decision":"accept","round":2}\n';
+      else printf '{"decision":"revise","round":1}\n'; fi > out/qa_result
+  - id: direct_host_audio
+    in: [script, qa_result]
+    out: [audio_manifest_host]
+    when: "test \"$(jq -r '.decision' qa_result)\" = accept"
+    run: >-
+      jq -n --arg script "$(cksum in/script | cut -d' ' -f1)"
+      '{schema:"audio-director/v1",voice:"host",script_checksum:$script,segments:["act_one","act_two","act_three"]}'
+      > out/audio_manifest_host
+  - id: direct_guest_audio
+    in: [script, qa_result]
+    out: [audio_manifest_guest]
+    when: "test \"$(jq -r '.decision' qa_result)\" = accept"
+    run: >-
+      jq -n --arg script "$(cksum in/script | cut -d' ' -f1)"
+      '{schema:"audio-director/v1",voice:"guest",script_checksum:$script,segments:["act_one","act_two","act_three"]}'
+      > out/audio_manifest_guest

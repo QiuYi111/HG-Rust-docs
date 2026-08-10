@@ -1,0 +1,113 @@
+version: 1
+project:
+  name: real-world-cad-release
+  default_targets: [release_manifest]
+slots:
+  requirements: { kind: file, path: fixtures/requirements.md }
+  board_seed: { kind: file, path: fixtures/board.kicad_pcb }
+  eval_matrix: { kind: file, path: fixtures/eval-matrix.json }
+  tool_failure: { kind: file, path: fixtures/tool-failure.json }
+  active_skill_seed: { kind: file, path: fixtures/active-skill.md }
+  design_intent: { kind: file, path: release/design-intent.json }
+  source: { kind: file, path: release/board.kicad_pcb }
+  step: { kind: file, path: release/board.step }
+  drawing: { kind: file, path: release/drawing.pdf }
+  render: { kind: dir, path: release/render }
+  drc: { kind: file, path: release/drc.txt }
+  simulation: { kind: file, path: release/simulation.json }
+  visual_critique: { kind: file, path: release/visual-critique.json }
+  mechanical_critique: { kind: file, path: release/mechanical-critique.json }
+  cad_critique: { kind: file, path: release/cad-critique.json }
+  dossier: { kind: file, path: release/dossier.json }
+  presentation: { kind: file, path: release/presentation.pdf }
+  skill_candidate: { kind: file, path: release/skill-candidate.md }
+  skill_benchmark: { kind: file, path: release/skill-benchmark.json }
+  active_skill: { kind: file, path: release/active-skill.md }
+  g6_acceptance: { kind: file, path: release/g6-acceptance.json }
+  release_manifest: { kind: file, path: release/manifest.json }
+rules:
+  - id: g0_capture_requirements
+    in: [requirements]
+    out: [design_intent]
+    run: >-
+      jq -n --arg digest "$(cksum in/requirements | cut -d' ' -f1)" '{gate:"G0",status:"pass",board_mm:[40,30],requirements_checksum:$digest,evidence_level:"workflow_qualification"}' > out/design_intent
+  - id: g1_generate_source
+    in: [design_intent, board_seed]
+    out: [source]
+    run: "cp in/board_seed out/source"
+  - id: g2_export_step
+    in: [source]
+    out: [step]
+    run: "cp in/source out/input.kicad_pcb; kicad-cli pcb export step --force --board-only --output out/step out/input.kicad_pcb >/dev/null"
+  - id: g2_export_drawing
+    in: [source]
+    out: [drawing]
+    run: "cp in/source out/input.kicad_pcb; kicad-cli pcb export pdf --mode-single --layers F.SilkS,Edge.Cuts --output out/drawing out/input.kicad_pcb >/dev/null"
+  - id: g2_render_board
+    in: [source]
+    out: [render]
+    run: "mkdir -p out/render; cp in/source out/input.kicad_pcb; kicad-cli pcb render --width 800 --height 600 --side top --output out/render/top.png out/input.kicad_pcb >/dev/null; kicad-cli pcb render --width 800 --height 600 --side bottom --output out/render/bottom.png out/input.kicad_pcb >/dev/null"
+  - id: g2_native_drc
+    in: [source]
+    out: [drc]
+    run: "cp in/source out/input.kicad_pcb; kicad-cli pcb drc --severity-all --exit-code-violations --refill-zones --output out/drc out/input.kicad_pcb >/dev/null"
+  - id: g2_simulate
+    in: [design_intent]
+    out: [simulation]
+    run: >-
+      printf 'HG divider qualification\nV1 in 0 DC 5\nR1 in out 10k\nR2 out 0 10k\n.op\n.print op v(out)\n.end\n' > out/fixture.cir; ngspice -b -o out/ngspice.log out/fixture.cir >/dev/null; grep -q '2.500000e+00' out/ngspice.log; jq -n '{schema:"spice-evidence/v1",status:"pass",simulator:"ngspice",input_v:5,output_v:2.5}' > out/simulation
+  - id: g3_visual_critic
+    in: [requirements, render, drawing]
+    out: [visual_critique]
+    run: >-
+      test -s in/render/top.png && test -s in/render/bottom.png && test -s in/drawing; jq -n --arg top "$(cksum in/render/top.png | cut -d' ' -f1)" --arg bottom "$(cksum in/render/bottom.png | cut -d' ' -f1)" --arg drawing "$(cksum in/drawing | cut -d' ' -f1)" '{critic:"visual",independent:true,status:"pass",top_checksum:$top,bottom_checksum:$bottom,drawing_checksum:$drawing}' > out/visual_critique
+  - id: g3_mechanical_critic
+    in: [requirements, step]
+    out: [mechanical_critique]
+    run: >-
+      grep -q 'ISO-10303-21' in/step; jq -n --arg step "$(cksum in/step | cut -d' ' -f1)" '{critic:"mechanical",independent:true,status:"pass",step_checksum:$step}' > out/mechanical_critique
+  - id: g3_cad_critic
+    in: [requirements, source, drc, simulation]
+    out: [cad_critique]
+    run: >-
+      grep -Eq '0 (DRC violations|条违规项)' in/drc; test "$(jq -r '.status' in/simulation)" = pass; jq -n --arg source "$(cksum in/source | cut -d' ' -f1)" '{critic:"cad",independent:true,status:"pass",source_checksum:$source,drc:"native-zero",simulation:"pass"}' > out/cad_critique
+  - id: g4_assemble_dossier
+    in: [design_intent, visual_critique, mechanical_critique, cad_critique]
+    out: [dossier]
+    run: >-
+      jq -n --slurpfile intent in/design_intent --slurpfile visual in/visual_critique --slurpfile mechanical in/mechanical_critique --slurpfile cad in/cad_critique '{gate:"G4",status:"pass",intent:$intent[0],critics:[$visual[0],$mechanical[0],$cad[0]]}' > out/dossier
+  - id: g4_render_presentation
+    in: [dossier, tool_failure]
+    out: [presentation]
+    run: >-
+      test "$(jq -r '.inject_presentation_failure' in/tool_failure)" = false || exit 75; mkdir -p out/rendered; printf '<html><body><h1>HG CAD Release</h1><p>G0-G4 evidence complete. Three independent critics passed.</p></body></html>' > out/release.html; soffice --headless --convert-to pdf --outdir out/rendered out/release.html >/dev/null; cp out/rendered/release.pdf out/presentation
+  - id: g5_derive_skill_candidate
+    in: [dossier]
+    out: [skill_candidate]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Use shell commands only, never apply_patch. You must execute exactly this command and do nothing else:
+        printf '# Candidate CAD Skill\n\nAdds transcript wording but no new frozen-case capability.\n' > out/skill_candidate
+  - id: g5_benchmark_skill
+    in: [skill_candidate, eval_matrix]
+    out: [skill_benchmark]
+    run: >-
+      jq -n --argjson baseline "$(jq '.active_skill_score' in/eval_matrix)" '{schema:"cad-skill-eval/v1",frozen_cases_passed:5,candidate_score:$baseline,improved:false,promotion:"suppress"}' > out/skill_benchmark
+  - id: g5_select_active_skill
+    in: [active_skill_seed, skill_candidate, skill_benchmark]
+    out: [active_skill]
+    run: >-
+      test "$(jq -r '.promotion' in/skill_benchmark)" = suppress; cp in/active_skill_seed out/active_skill
+  - id: g6_human_acceptance
+    in: [dossier, presentation, skill_benchmark, active_skill]
+    out: [g6_acceptance]
+    run: { using: human, command: "Accept or reject G6 release evidence from an exact JSON file" }
+  - id: finalize_release
+    in: [source, step, drawing, render, drc, simulation, visual_critique, mechanical_critique, cad_critique, dossier, presentation, skill_benchmark, active_skill, g6_acceptance]
+    out: [release_manifest]
+    when: "test \"$(jq -r '.decision' g6_acceptance)\" = accept"
+    run: >-
+      jq -n --arg source "$(cksum in/source | cut -d' ' -f1)" --arg step "$(cksum in/step | cut -d' ' -f1)" --arg drawing "$(cksum in/drawing | cut -d' ' -f1)" --arg render_top "$(cksum in/render/top.png | cut -d' ' -f1)" --arg render_bottom "$(cksum in/render/bottom.png | cut -d' ' -f1)" --arg presentation "$(cksum in/presentation | cut -d' ' -f1)" '{schema:"cad-release/v1",gate:"G6",decision:"accept",evidence_level:"workflow_qualification",source_checksum:$source,step_checksum:$step,drawing_checksum:$drawing,render_top_checksum:$render_top,render_bottom_checksum:$render_bottom,presentation_checksum:$presentation,simulation:"pass",critics:["visual","mechanical","cad"],skill_promotion:"suppressed"}' > out/release_manifest

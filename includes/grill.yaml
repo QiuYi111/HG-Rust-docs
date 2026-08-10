@@ -1,0 +1,15 @@
+version: 1
+project:
+  name: experimental-interactive-grill
+  default_targets: [roadmap]
+slots:
+  goal: { kind: file, path: goal.md }
+  grill_driver: { kind: file, path: scripts/grill_session.py }
+  product_contract: { kind: file, path: artifacts/product.json }
+  roadmap: { kind: file, path: artifacts/roadmap.json }
+rules:
+  - id: product_grill
+    in: [goal, grill_driver]
+    out: [product_contract, roadmap]
+    run: "python3 in/grill_driver"
+    limits: { timeout: 3600, max_attempts: 1 }
