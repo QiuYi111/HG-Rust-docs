@@ -412,6 +412,42 @@ body {
   margin-top: 0;
 }
 
+.hg-yaml {
+  position: relative;
+  margin: 1.25rem 0 2rem;
+  border: 1px solid var(--hg-line);
+  border-radius: 0.8rem;
+  background: var(--hg-surface);
+  box-shadow: var(--hg-shadow-soft);
+}
+
+.hg-yaml::before {
+  display: block;
+  padding: 0.58rem 0.9rem;
+  border-bottom: 1px solid rgba(169, 120, 63, 0.2);
+  color: var(--hg-brass);
+  content: "harness.yaml";
+  font-size: 0.58rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hg-yaml .highlight,
+.hg-yaml pre {
+  margin: 0;
+  border-radius: 0 0 0.8rem 0.8rem;
+}
+
+.hg-yaml pre {
+  max-height: 38rem;
+  overflow: auto;
+}
+
+.hg-yaml + p {
+  margin-top: -0.7rem;
+}
+
 .md-footer {
   background: #e9dfd1;
   color: var(--hg-ink);
@@ -488,6 +524,96 @@ body {
 
   .hg-diagram img {
     min-width: 0;
+  }
+
+  .md-typeset:has(.hg-yaml) .md-typeset__table {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) {
+    display: block;
+    border: 0;
+    background: transparent;
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) tbody {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) tr {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--hg-line);
+    border-radius: 0.65rem;
+    background: rgba(252, 248, 240, 0.72);
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) td {
+    display: grid;
+    grid-template-columns: 4.8rem minmax(0, 1fr);
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.56rem 0.72rem;
+    border: 0;
+    border-bottom: 1px solid rgba(169, 120, 63, 0.16);
+    vertical-align: top;
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) td:last-child {
+    border-bottom: 0;
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) td::before {
+    color: var(--hg-brass);
+    font-size: 0.56rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(3):last-child) td:nth-child(1)::before {
+    content: "Slot";
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(3):last-child) td:nth-child(2)::before {
+    content: "Kind / Stage";
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(3):last-child) td:nth-child(3)::before {
+    content: "Role";
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(4):last-child) td:nth-child(1)::before {
+    content: "Rule";
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(4):last-child) td:nth-child(2)::before {
+    content: "Reads";
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(4):last-child) td:nth-child(3)::before {
+    content: "Writes";
+  }
+
+  .md-typeset:has(.hg-yaml) table:has(th:nth-child(4):last-child) td:nth-child(4)::before {
+    content: "Work";
+  }
+
+  .md-typeset:has(.hg-yaml) table:not([class]) code {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }
 

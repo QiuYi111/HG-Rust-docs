@@ -1,22 +1,47 @@
 # Grill
 
-Grill places a multi-turn human and agent discussion inside an ordinary Shell Rule. HG waits for the session to end, validates the declared outputs, then commits the product contract and roadmap together.
+Grill places a multi-turn human-agent conversation inside an ordinary Shell Rule. HG waits for the terminal session to end, validates both declared outputs, and commits the product contract and roadmap atomically.
+
+The live session currently requires macOS, iTerm2, and an authenticated `codex` CLI. Mock mode only requires Python.
 
 <div class="hg-diagram">
   <img src="../../../assets/diagrams/grill.en.svg" alt="Grill multi-turn interaction graph">
 </div>
 
-## The boundary that matters
+## Complete graph definition
 
-`product_grill` reads `goal` and `grill_driver`, then writes `product_contract` and `roadmap` in one Attempt. The multi-turn conversation lives inside the executor. The graph still contains one Rule.
+This is the entire configuration and the smallest of the six first-class cases. You can also [download the raw YAML](../../includes/grill.yaml).
 
-HG owns input and output atomicity. The session script owns the terminal experience and `/exit` protocol.
+<div class="hg-yaml" markdown>
 
-## Run mock mode first
+```yaml
+--8<-- "includes/grill.yaml"
+```
+
+</div>
+
+## What each Slot does
+
+| Slot | Kind | Role in the graph |
+|---|---|---|
+| `goal` | file | The product goal to challenge and clarify. |
+| `grill_driver` | file | The Python launcher that opens the terminal, maintains the conversation, and implements the exit protocol. |
+| `product_contract` | file | The structured product contract produced by the session. |
+| `roadmap` | file | The execution roadmap produced by the same session and used as the default target. |
+
+
+## What each Rule does
+
+| Rule | Reads | Writes | Work |
+|---|---|---|---|
+| `product_grill` | goal, grill_driver | product_contract, roadmap | Runs the session driver with a one-hour timeout and one allowed Attempt. Both outputs must validate before either is committed. |
+
+
+The conversation remains inside the executor. The graph records the inputs and the artifacts a successful session must produce. If the session exits early or writes only one file, the Attempt cannot commit half a result.
+
+## Run mock mode
 
 ```bash
-cargo build -p hg-cli --bin hg
-export PATH="$PWD/target/debug:$PATH"
 cd examples/03-interactive-grill
 hg init --project .
 hg put goal goal.md --project .
@@ -26,10 +51,14 @@ hg materialize product_contract --project .
 hg materialize roadmap --project .
 ```
 
-`artifacts/product.json` and `artifacts/roadmap.json` should both exist. This path validates the Rule, output checks, and atomic commit without opening a terminal window.
+Both `artifacts/product.json` and `artifacts/roadmap.json` should exist.
 
-## Run a live session
+## Run the live session
 
-Live mode currently needs macOS, iTerm2, and an authenticated `codex` CLI. Remove `HG_GRILL_MODE=mock` and run `hg run roadmap --project .`. Continue the discussion in the new window until the agent has written both outputs. Enter `/exit` to let the parent Attempt validate and commit them.
+Remove `HG_GRILL_MODE=mock` and run the target again.
 
-Current launcher and recovery limits are listed in the case directory's `README.md`.
+```bash
+hg run roadmap --project .
+```
+
+A new iTerm2 window opens. Continue the conversation until the agent has written both outputs. Enter `/exit`; only then does the parent Attempt validate and commit them.

@@ -1,0 +1,64 @@
+version: 1
+project:
+  name: pomodoro-self-improvement
+  default_targets: [approved]
+slots:
+  brief: { kind: file, path: request/brief.md }
+  candidate: { kind: git, path: artifacts/candidate }
+  critique: { kind: file, path: artifacts/critique.json }
+  approval: { kind: file, path: artifacts/approval.json }
+  approved: { kind: git, path: artifacts/approved }
+rules:
+  - id: coder
+    in: [brief, candidate, critique]
+    out: [candidate]
+    when: >-
+      test "$(jq -r '.decision // "revise"' critique)" = revise ||
+      test "$(jq -r '.brief_checksum // ""' critique)" != "$(cksum brief | cut -d' ' -f1)"
+    session: { policy: reuse, scope: project }
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Read in/brief, inspect the Git repository in in/candidate, and read the
+        latest structured feedback from in/critique. Clone in/candidate to
+        out/candidate, implement the smallest Pomodoro improvement requested by
+        the brief and critique, verify the result, and create one Git commit in
+        out/candidate. Do not modify inputs or write anywhere else.
+  - id: critique
+    in: [brief, candidate, critique]
+    out: [critique]
+    when: >-
+      test "$(jq -r '.candidate_commit // ""' critique)" != "$(git -C candidate rev-parse HEAD)" ||
+      test "$(jq -r '.brief_checksum // ""' critique)" != "$(cksum brief | cut -d' ' -f1)"
+    session: { policy: reuse, scope: project }
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Review in/candidate against in/brief and the previous in/critique. Run
+        focused checks. Write only out/critique as JSON with decision equal to
+        revise or accept, actionable feedback, a checks array, candidate_commit
+        equal to `git -C in/candidate rev-parse HEAD`, brief_checksum equal to
+        `cksum in/brief | cut -d' ' -f1`, and an integer round one greater than
+        the previous round. Accept only a usable and accessible timer.
+  - id: request_approval
+    in: [brief, candidate, critique]
+    out: [approval]
+    when: >-
+      test "$(jq -r '.decision' critique)" = accept &&
+      test "$(jq -r '.candidate_commit' critique)" = "$(git -C candidate rev-parse HEAD)" &&
+      test "$(jq -r '.brief_checksum' critique)" = "$(cksum brief | cut -d' ' -f1)"
+    run: { using: human, command: "Approve the reviewed Pomodoro candidate" }
+  - id: package_approved
+    in: [brief, candidate, critique, approval]
+    out: [approved]
+    when: >-
+      test "$(jq -r '.decision' critique)" = accept &&
+      test "$(jq -r '.decision' approval)" = approve &&
+      test "$(jq -r '.candidate_commit' critique)" = "$(git -C candidate rev-parse HEAD)"
+    run: "git clone -q in/candidate out/approved"

@@ -1,0 +1,90 @@
+version: 1
+project:
+  name: learning-helper
+  default_targets: [handbook]
+slots:
+  knowledge: { kind: file, path: inputs/Knowledge.md }
+  examples: { kind: file, path: inputs/Examples.md }
+  expansion: { kind: file, path: inputs/Expansion.md }
+  scope_prompt: { kind: file, path: fixtures/scope.md }
+  docx_builder: { kind: file, path: build-docx.sh }
+  scope: { kind: file, path: scope.md }
+  knowledge_distillation: { kind: file, path: distillations/Knowledge.md }
+  examples_distillation: { kind: file, path: distillations/Examples.md }
+  expansion_distillation: { kind: file, path: distillations/Expansion.md }
+  template: { kind: file, path: template.md }
+  conclusion: { kind: file, path: conclusion.md }
+  draft: { kind: file, path: draft.md }
+  coverage: { kind: file, path: coverage.json }
+  handbook: { kind: file, path: handbook.docx }
+rules:
+  - id: choose_scope
+    in: [scope_prompt]
+    out: [scope]
+    run: { using: human, command: "Confirm the course scope from this exact file" }
+  - id: distill_knowledge
+    in: [scope, knowledge]
+    out: [knowledge_distillation]
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Read in/scope and in/knowledge. Produce a concise teaching distillation
+        in out/knowledge_distillation. Preserve definitions and equations,
+        explain why each idea matters, and do not invent facts or write other
+        paths.
+  - id: distill_examples
+    in: [scope, examples]
+    out: [examples_distillation]
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Read in/scope and in/examples. Write out/examples_distillation as a
+        compact worked-example section. Retain concrete steps and answers,
+        connect them to the requested scope, and write no other path.
+  - id: distill_expansion
+    in: [scope, expansion]
+    out: [expansion_distillation]
+    permissions: { network: none, secrets: [] }
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Read in/scope and in/expansion. Write out/expansion_distillation with
+        useful extensions, caveats, and connections, grounded only in the
+        supplied source. Write no other path.
+  - id: build_template
+    in: [scope]
+    out: [template]
+    run: "printf '# Learning Handbook\n\nScope is revision-bound.\n' > out/template"
+  - id: build_conclusion
+    in: [scope]
+    out: [conclusion]
+    run: "printf '## Conclusion\n\nEvery source contributes to the synthesis.\n' > out/conclusion"
+  - id: assemble_draft
+    in: [template, conclusion, knowledge_distillation, examples_distillation, expansion_distillation]
+    out: [draft]
+    run: >-
+      cat in/template in/examples_distillation in/expansion_distillation
+      in/knowledge_distillation in/conclusion > out/draft;
+      printf '\nCoverage: complete\nEquation: x^2 + y^2 = z^2\n' >> out/draft
+  - id: review_coverage
+    in: [draft, coverage]
+    out: [coverage]
+    when: >-
+      test "$(jq -r '.draft_checksum // ""' coverage)" != "$(cksum draft | cut -d' ' -f1)"
+    run: >-
+      checksum=$(cksum in/draft | cut -d' ' -f1);
+      if grep -q 'Coverage: complete' in/draft; then decision=accept; else decision=revise; fi;
+      printf '{"decision":"%s","draft_checksum":"%s"}\n' "$decision" "$checksum" > out/coverage
+  - id: render_docx
+    in: [draft, coverage, scope, docx_builder]
+    out: [handbook]
+    when: "test \"$(jq -r '.decision' coverage)\" = accept"
+    run: "sh in/docx_builder in/draft out/handbook"

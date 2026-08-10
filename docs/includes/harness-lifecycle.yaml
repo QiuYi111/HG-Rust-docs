@@ -1,0 +1,121 @@
+version: 1
+project:
+  name: real-world-harness-lifecycle
+  default_targets: [final_repo]
+slots:
+  project_fixture: { kind: dir, path: fixtures/project }
+  human_responses: { kind: file, path: fixtures/human-responses.json }
+  product_brief: { kind: file, path: product-brief.md }
+  questions: { kind: file, path: lifecycle/questions.md }
+  product_definition: { kind: file, path: lifecycle/product.json }
+  feasibility: { kind: file, path: lifecycle/feasibility.json }
+  core_approval: { kind: file, path: lifecycle/core-approval.json }
+  spec: { kind: file, path: lifecycle/spec.md }
+  plan: { kind: file, path: lifecycle/plan.md }
+  tasks: { kind: file, path: lifecycle/tasks.md }
+  role_check: { kind: file, path: lifecycle/role-check.json }
+  next_task: { kind: file, path: lifecycle/next-task.md }
+  worker_report: { kind: file, path: lifecycle/worker-report.md }
+  evaluation: { kind: file, path: lifecycle/eval.md }
+  report: { kind: file, path: lifecycle/report.md }
+  review: { kind: file, path: lifecycle/acceptance-review.md }
+  final_repo: { kind: git, path: lifecycle-repo }
+rules:
+  - id: grill_product
+    in: [project_fixture, product_brief]
+    out: [questions]
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Use shell commands only, never apply_patch. You must execute exactly this command and do nothing else:
+        printf '# Product Grill\n\n1. What is the smallest deterministic behavior?\n2. Which acceptance evidence proves it?\n' > out/questions
+  - id: define_product
+    in: [questions, human_responses]
+    out: [product_definition]
+    run: { using: human, command: "Provide the exact product definition JSON" }
+  - id: assess_feasibility
+    in: [project_fixture, product_definition]
+    out: [feasibility]
+    run: >-
+      jq -n --arg product "$(jq -r '.mvp' in/product_definition)" '{feasible:true,risk:"core",product:$product,reason:"lifecycle kernel boundary"}' > out/feasibility
+  - id: approve_core
+    in: [feasibility, human_responses]
+    out: [core_approval]
+    run: { using: human, command: "Approve or reject the core-risk fixture implementation" }
+  - id: write_spec
+    in: [product_definition, core_approval]
+    out: [spec]
+    when: "test \"$(jq -r '.decision' core_approval)\" = approve"
+    run: "printf '# Spec\n\nGiven 1, increment returns 2.\n' > out/spec"
+  - id: write_plan
+    in: [feasibility, core_approval]
+    out: [plan]
+    when: "test \"$(jq -r '.decision' core_approval)\" = approve"
+    run: "printf '# Plan\n\nRED test, GREEN implementation, evaluation, report, review.\n' > out/plan"
+  - id: write_tasks
+    in: [product_definition, feasibility, core_approval]
+    out: [tasks]
+    when: "test \"$(jq -r '.decision' core_approval)\" = approve"
+    run: "printf '# Tasks\n\n1. RED acceptance.\n2. GREEN implementation.\n3. Verify and report.\n' > out/tasks"
+  - id: enforce_role_boundary
+    in: [human_responses, core_approval]
+    out: [role_check]
+    when: "test \"$(jq -r '.decision' core_approval)\" = approve"
+    run: >-
+      role=$(jq -r '.role_violation.role' in/human_responses); path=$(jq -r '.role_violation.path' in/human_responses); if test "$role" = TDD-RED && case "$path" in src/*) true;; *) false;; esac; then jq -n --arg role "$role" --arg path "$path" '{decision:"reject",reason:"role_boundary",role:$role,path:$path}' > out/role_check; else exit 1; fi
+  - id: supervisor_iteration
+    in: [spec, plan, tasks, role_check]
+    out: [next_task]
+    when: "test \"$(jq -r '.decision' role_check)\" = reject"
+    run:
+      using: codex
+      model: gpt-5.6-luna
+      reasoning_effort: none
+      command: >-
+        Use shell commands only, never apply_patch. You must execute exactly this command and do nothing else:
+        printf '# Next Task\n\nObjective: implement increment.\nAllowed: src/lib.rs.\nForbidden: tests and product scope.\nAcceptance: increment(1) == 2.\nRequired Harness process: TDD-GREEN then report.\nVerification: cargo test.\nOutput: .pm/runtime/worker-report.md.\n' > out/next_task
+  - id: opencode_worker
+    in: [project_fixture, next_task, role_check]
+    out: [worker_report]
+    when: "test \"$(jq -r '.decision' role_check)\" = reject"
+    run: >-
+      OPENCODE_PERMISSION='{"bash":"allow","edit":"allow","write":"allow"}' opencode run -m zhipuai-coding-plan/glm-5.1 'Use shell commands only. Execute exactly: printf "# Worker Report\n\n## Changed files\n- src/lib.rs\n\n## Commands run\n- cargo test\n\n## Test results\n- 1 passed\n\n## Acceptance criteria\n- [x] increment(1) == 2\n\n## Problems encountered\n- none\n\n## Deviations\n- none\n" > out/worker_report' >/dev/null
+  - id: evaluate_iteration
+    in: [spec, worker_report]
+    out: [evaluation]
+    run: "grep -q '1 passed' in/worker_report && printf '# Eval\n\nAcceptance behavior and worker evidence pass.\n' > out/evaluation"
+  - id: report_iteration
+    in: [plan, tasks, worker_report, evaluation]
+    out: [report]
+    run: "printf '# Implementation Report\n\nOne bounded Supervisor/worker iteration completed with role isolation.\n' > out/report"
+  - id: review_iteration
+    in: [spec, role_check, worker_report, evaluation, report]
+    out: [review]
+    run: >-
+      test "$(jq -r '.decision' in/role_check)" = reject; grep -q 'Acceptance criteria' in/worker_report; printf '# Acceptance Review\n\nVerdict: accepted\nEvidence: role violation rejected; worker report complete; evaluation passed.\nNext action: stage exit.\n' > out/review
+  - id: commit_lifecycle
+    in: [project_fixture, product_definition, feasibility, core_approval, spec, plan, tasks, role_check, next_task, worker_report, evaluation, report, review]
+    out: [final_repo]
+    run: |
+      git init -q out/final_repo
+      git -C out/final_repo config user.email hg@example.invalid
+      git -C out/final_repo config user.name HG
+      cp -R in/project_fixture/. out/final_repo/
+      mkdir -p out/final_repo/specs/001-counter out/final_repo/.pm/runtime
+      cp in/product_definition out/final_repo/.pm/runtime/product.json
+      cp in/feasibility out/final_repo/.pm/runtime/feasibility.json
+      cp in/core_approval out/final_repo/.pm/runtime/core-approval.json
+      cp in/spec out/final_repo/specs/001-counter/spec.md
+      cp in/plan out/final_repo/specs/001-counter/plan.md
+      cp in/tasks out/final_repo/specs/001-counter/tasks.md
+      cp in/role_check out/final_repo/.pm/runtime/role-check.json
+      cp in/next_task out/final_repo/.pm/runtime/next-task.md
+      cp in/worker_report out/final_repo/.pm/runtime/worker-report.md
+      cp in/evaluation out/final_repo/specs/001-counter/eval.md
+      cp in/report out/final_repo/specs/001-counter/report.md
+      cp in/review out/final_repo/.pm/runtime/acceptance-review.md
+      printf 'schema: harness-lifecycle/v1\niteration: 1\nloop_control: STAGE_EXIT_REACHED\n' > out/final_repo/.pm/runtime/state.yaml
+      git -C out/final_repo add .
+      git -C out/final_repo commit -qm 'complete Harness lifecycle fixture'
