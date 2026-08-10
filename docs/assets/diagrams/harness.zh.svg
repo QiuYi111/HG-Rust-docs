@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 247.85000000000002 800" width="247.85000000000002" height="800" style="--bg:#fcf8f0;--fg:#2d2a26;--line:#a9783f;--accent:#e58224;--muted:#766c60;--surface:#f5f0e7;--border:#cbbca7;background:var(--bg)">
+<style>
+
+  text { font-family: 'Inter, Noto Sans SC, system-ui, sans-serif', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 30%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="4.8" refX="8" refY="2.4" orient="auto">
+    <polygon points="0 0, 8 2.4, 0 4.8" fill="var(--_arrow)" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="4.8" refX="0" refY="2.4" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.4, 8 4.8" fill="var(--_arrow)" />
+  </marker>
+</defs>
+<polyline points="123.92500000000001,76 123.92500000000001,116" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,152 123.92500000000001,192" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,228 123.92500000000001,268" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,304 123.92500000000001,344" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,380 123.92500000000001,420" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,456 123.92500000000001,496" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,532 123.92500000000001,572" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,608 123.92500000000001,648" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="123.92500000000001,684 123.92500000000001,724" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<rect x="93.62500000000001" y="40" width="60.6" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="90.05000000000001" y="116" width="67.75" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="93.62500000000001" y="192" width="60.6" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="93.62500000000001" y="268" width="60.6" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="93.62500000000001" y="344" width="60.6" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="54.30000000000001" y="420" width="139.25" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="93.62500000000001" y="496" width="60.6" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="40" y="572" width="167.85000000000002" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="43.575" y="648" width="160.70000000000002" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="65.025" y="724" width="117.80000000000001" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<text x="123.92500000000001" y="58" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">产品简述</text>
+<text x="123.92500000000001" y="134" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Grill</text>
+<text x="123.92500000000001" y="210" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">人工定义</text>
+<text x="123.92500000000001" y="286" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">风险评估</text>
+<text x="123.92500000000001" y="362" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">核心批准</text>
+<text x="123.92500000000001" y="438" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">spec plan tasks</text>
+<text x="123.92500000000001" y="514" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">角色检查</text>
+<text x="123.92500000000001" y="590" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Supervisor 与 worker</text>
+<text x="123.92500000000001" y="666" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">eval report review</text>
+<text x="123.92500000000001" y="742" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Git Revision</text>
+</svg>

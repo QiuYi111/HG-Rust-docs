@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262.15 800" width="262.15" height="800" style="--bg:#fcf8f0;--fg:#2d2a26;--line:#a9783f;--accent:#e58224;--muted:#766c60;--surface:#f5f0e7;--border:#cbbca7;background:var(--bg)">
+<style>
+
+  text { font-family: 'Inter, Noto Sans SC, system-ui, sans-serif', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 30%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="4.8" refX="8" refY="2.4" orient="auto">
+    <polygon points="0 0, 8 2.4, 0 4.8" fill="var(--_arrow)" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="4.8" refX="0" refY="2.4" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.4, 8 4.8" fill="var(--_arrow)" />
+  </marker>
+</defs>
+<polyline points="131.075,76 131.075,116" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,152 131.075,192" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,228 131.075,268" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,304 131.075,344" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,380 131.075,420" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,456 131.075,496" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,532 131.075,572" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,608 131.075,648" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<polyline points="131.075,684 131.075,724" fill="none" stroke="var(--_line)" stroke-width="0.75" marker-end="url(#arrowhead)" />
+<rect x="68.6" y="40" width="124.95" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="97.19999999999999" y="116" width="67.75" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="57.874999999999986" y="192" width="146.4" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="61.44999999999999" y="268" width="139.25" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="68.6" y="344" width="124.95" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="61.44999999999999" y="420" width="139.25" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="79.32499999999999" y="496" width="103.5" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="39.999999999999986" y="572" width="182.15" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="50.72499999999998" y="648" width="160.70000000000002" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<rect x="72.17499999999998" y="724" width="117.80000000000001" height="36" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+<text x="131.075" y="58" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Product brief</text>
+<text x="131.075" y="134" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Grill</text>
+<text x="131.075" y="210" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Human definition</text>
+<text x="131.075" y="286" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Risk assessment</text>
+<text x="131.075" y="362" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Core approval</text>
+<text x="131.075" y="438" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">spec plan tasks</text>
+<text x="131.075" y="514" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Role check</text>
+<text x="131.075" y="590" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Supervisor and worker</text>
+<text x="131.075" y="666" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">eval report review</text>
+<text x="131.075" y="742" text-anchor="middle" dy="0.35em" font-size="13" font-weight="500" fill="var(--_text)">Git Revision</text>
+</svg>

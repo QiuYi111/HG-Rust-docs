@@ -1,83 +1,44 @@
-<div class="language-switch"><a href="../../zh/configuration/">中文</a> · <strong>English</strong></div>
+# Configuration and executors
 
-# Configuration overview
+Start with the smallest useful Slots and Rules. Add policy only when a real constraint calls for it. This keeps dependencies visible and preserves the compact author model.
 
-The project configuration file is `harness.yaml`, and its current format version is `1`. The file has three layers: project metadata, Slots, and Rules.
-
-## Minimal structure
+## Minimal configuration
 
 ```yaml
 version: 1
 project:
-  name: report-project
-  default_targets: [report]
-
+  name: hello-reconciliation
+  default_targets: [greeting]
 slots:
   request: { kind: file, path: request.txt }
-  report: { kind: file, path: report.md }
-
+  greeting: { kind: file, path: greeting.md }
 rules:
-  - id: make_report
+  - id: greet
     in: [request]
-    out: [report]
-    run: "cp in/request out/report"
+    out: [greeting]
+    run: "{ printf '# Hello\\n\\n'; cat in/request; } > out/greeting"
 ```
 
-### `version`
+## Slot kinds
 
-The configuration format version. Use `1`.
+Use `file` for one file, `dir` for a directory tree, and `git` for a repository where commit identity and history matter. The `path` is a materialization destination, not the Rule's runtime working directory.
 
-### `project`
+## Rule policy
 
-`name` is the project name. `default_targets` lists the Slots used when the command line does not provide targets.
-
-### `slots`
-
-Every Slot needs an explicit `kind`:
+`permissions` declares network and secret boundaries. `limits` controls timeout and maximum attempts. `session` selects agent session reuse. `when` evaluates eligibility on current inputs.
 
 ```yaml
-slots:
-  document: { kind: file, path: docs/document.md }
-  assets: { kind: dir, path: build/assets }
-  source_tree: { kind: git, path: . }
-  feed: { kind: stream }
-  binary: { kind: opaque, path: build/app.bin }
+permissions: { network: none, secrets: [] }
+limits: { timeout: 900, max_attempts: 2 }
+session: { policy: reuse, scope: project }
 ```
 
-Supported kinds are `file`, `dir`, `git`, `stream`, and `opaque`. The system does not infer a kind from a file extension.
+These fields constrain execution without changing Slot dependencies.
 
-### `rules`
+## Executor ABI
 
-Each Rule needs an `id`, `in`, `out`, and `run`. `run` can be a shell command string or an executor mapping.
+Every executor receives the same session directory. Inputs are mounted under `in/`. A Rule writes declared results under `out/`. The kernel validates those outputs before committing Revisions.
 
-## Inputs, outputs, and execution directories
+Shell is a good fit for deterministic tools. Agent executors such as Codex handle open-ended semantic work. Human execution is appropriate when a person must own the decision. Choose according to the task, then declare the required network, credentials, session, and effect boundaries.
 
-An executor receives an isolated workspace:
-
-```text
-workspace/
-├── in/       # current input Slots
-├── out/      # candidate outputs
-└── execution.json
-```
-
-A Shell Rule normally reads `in/<slot>` and writes `out/<slot>`. Only validated and committed candidates become new Revisions.
-
-## Check the configuration first
-
-```bash
-hg check --project . --strict
-hg fmt --project . --check
-```
-
-The checks catch unknown executors, duplicate IDs, missing `kind` fields, invalid policy values, and malformed YAML structure.
-
-## Configuration guidance
-
-- Use stable, readable business names for Slots; do not make a temporary filename the model name.
-- Keep one Rule focused on one verifiable transformation.
-- Start deterministic checks with `shell`, then choose another executor when reasoning or a human decision is required.
-- Put external actions in their own Rule and configure idempotency plus readback.
-- Set `limits` for long-running work and `permissions` for sensitive work.
-
-Next read [Executors and policies](executors.md) or the [Configuration reference](configuration-reference.md).
+See [CLI and operations](reference.md) for commands. The [tutorial path](tutorials/index.md) links to complete, current `harness.yaml` files.

@@ -1,0 +1,11 @@
+{
+  "name": "hg-rust-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "diagrams": "node scripts/render-diagrams.mjs"
+  },
+  "dependencies": {
+    "beautiful-mermaid": "0.1.3"
+  }
+}

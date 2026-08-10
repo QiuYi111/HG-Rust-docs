@@ -1,123 +1,67 @@
-<div class="language-switch"><a href="../../zh/model/">中文</a> · <strong>English</strong></div>
+# Two primitives
 
-# Object model
+A `harness.yaml` is mostly `slots` and `rules`. Other objects preserve execution facts without expanding the author model.
 
-Authors start with Slots and Rules. The remaining objects are maintained by the kernel so that versioning, execution, commits, recovery, concurrency, and explanation share one authoritative model.
-
-<div class="diagram">
-  <img src="../../assets/model.svg" alt="The relationships between Project, Slot, Rule, Revision, Activation, Attempt, Receipt, and Event" />
+<div class="hg-diagram">
+  <img src="../../assets/diagrams/two-primitives.en.svg" alt="The relationship between Slot and Rule">
 </div>
 
-## Author model: Slot + Rule
+## Slot
 
-### Slot: a stable Artifact name
-
-A Slot is a stable graph name, not a file path. It has an explicit `kind`, may have a materialization path, and may declare a writer policy.
+A Slot gives an artifact a stable name, kind, and materialization path.
 
 ```yaml
 slots:
-  request: { kind: file, path: request.txt }
-  report: { kind: file, path: report.md }
+  brief: { kind: file, path: request/brief.md }
+  candidate: { kind: git, path: artifacts/candidate }
+  report: { kind: file, path: artifacts/report.md }
 ```
 
-The current formal value of a Slot is its **Head**, which points to an immutable **Revision**. A Slot without a writer Rule is usually a Source Slot imported by `hg put`, a watcher, a Webhook, or a person. A Slot with a writer Rule is a Derived Slot; its materialized path cannot be treated as a new Head directly.
+Each committed version in a Slot is an immutable Revision. The kernel can therefore identify exactly what a Rule read and decide whether an existing output still matches the current inputs.
 
-### Rule: the only state-transition node
+## Rule
 
-A Rule declares input Slots, output Slots, an executor, and optional Guard, Session, permission, budget, and Effect policies:
+A Rule declares its inputs, outputs, and execution method.
 
 ```yaml
 rules:
-  - id: make_report
-    in: [request]
+  - id: write_report
+    in: [brief, candidate]
     out: [report]
-    run:
-      using: shell
-      command: "cp $HG_IN/request $HG_OUT/report"
+    run: "printf '# Report\n' > out/report"
 ```
 
-The `in` / `out` relation already defines dependencies, so there is no second Edge structure to maintain. Branches, joins, and feedback loops emerge from Slot + Rule composition; `refine_gate`, Human, and Effect have no privileged node semantics.
+At execution time, inputs appear under `in/` and declared outputs must be written under `out/`. A successful Attempt commits every output atomically. Failure, timeout, or a missing output leaves no partial Revision.
 
-## Kernel objects
+## Runtime facts
 
-| Object | Precise meaning | Where to inspect it |
-|---|---|---|
-| `GraphRevision` | Immutable normalized graph definition with SlotSpecs, RuleSpecs, and target indexes | `check`, `graph`, `inspect` |
-| `Revision` | Addressable, immutable Artifact fact | `artifact history`, `inspect` |
-| `Head` | The Revision currently accepted for a Slot | `status`, `explain` |
-| `Materialization` | A Revision projected into a file, directory, Git, or external system | `materialize`, `drift` |
-| `Activation` | A logical need for a Rule and an exact input Revision vector | `plan`, `events` |
-| `Attempt` | One real execution, possibly a failure, retry, or recovery | `log`, `logs` |
-| `Receipt` | Verified and accepted terminal proof of an Attempt | `status`, cache decisions |
-| `Session` | Executor context reusable across Attempts | `session` commands |
-| `Lease` | Concurrency ownership proof for execution and commit | `inspect`, `events` |
-| `Event` | An append-only fact stream for observation, recovery, and UI projections | `events`, `watch` |
-| `Effect` | Rule policy and Receipt for interaction with an external system | `effect verify` |
+| Name | Meaning |
+| --- | --- |
+| Revision | An immutable artifact version in a Slot |
+| Activation | A Rule paired with an exact input Revision frontier |
+| Attempt | One execution of an Activation |
+| Receipt | The reusable record of a successful execution |
 
-## Revisions, Heads, and Materialization
+A Lease prevents multiple workers from owning the same Activation. A Session lets an executor retain controlled context across related runs. Both are runtime mechanisms.
 
-```text
-Slot ──head──> Revision ──materialize──> path / worktree / external system
+## Three common execution methods
+
+A Shell Rule runs a command. An Agent Rule delegates semantic work to an executor. A Human Rule pauses for a responsible decision.
+
+```yaml
+run: "cp in/source out/result"
 ```
 
-- A **Revision** is an immutable state in history, identified by a Digest.
-- A **Head** is the Revision currently accepted for a Slot.
-- A **Materialization** is an accessible projection of a Head; it may be missing, damaged, or drifted, but it cannot rewrite Revision history.
-
-Deleting `report.md` does not delete the `report` Head. `hg materialize report` restores the file from the existing Revision; if the file was hand-edited, `hg drift report` reports the difference instead of treating it as a new Derived Slot version.
-
-## How an Activation is derived from current facts
-
-Given a GraphRevision, a Rule contract, and the Heads of its input Slots, the Activation Key is:
-
-```text
-activation_key = H(
-  graph_revision_id,
-  contract_digest(rule),
-  ordered[(slot_id, head_revision_id)]
-)
+```yaml
+run:
+  using: codex
+  command: "Read in/brief and write only out/report."
 ```
 
-An Activation is not a process or a Session. It becomes desired/ready only when required inputs exist, the Guard is `TRUE`, no valid Receipt handles it, no writer conflict exists, and the budget permits execution.
-
-One Activation can have multiple Attempts. Agent nondeterminism is not disguised as a pure function: the system records each Attempt’s exact inputs, executor, Session checkpoints, candidate outputs, and checks, while at most one Receipt is accepted for the current Activation.
-
-## How a Receipt decides reuse
-
-An effective Receipt must at least:
-
-- have `SUCCEEDED` or `NO_CHANGE` status;
-- bind the same Activation Key;
-- reference output Revisions that still exist;
-- remain consistent with the current writer policy and Slot Heads;
-- use structural checks covered by the current contract digest;
-- retain a valid Effect Readback, or follow a policy that allows one-time verification.
-
-Changing an input, Rule contract, executor adapter, output validation, or Effect policy therefore causes the next reconciliation to reassess the result. File existence alone is not a cache hit.
-
-## The boundary between Attempt, Receipt, and Session
-
-```text
-Activation  ──may have──> Attempt 1 ──may use──> Session A
-     │                     Attempt 2 ──may use──> Session A or B
-     │
-     └────────────── accepted Attempt ──> Receipt ──> Slot Head update
+```yaml
+run:
+  using: human
+  command: "Approve the reviewed candidate"
 ```
 
-- `Activation` means “the current input vector needs processing”;
-- `Attempt` means “an execution actually happened”;
-- `Session` is reusable execution context;
-- `Receipt` proves that a result was verified and accepted.
-
-Every Session step receives the complete current contract and change hints. Losing a Session can affect efficiency, but cannot be a prerequisite for recovering formal state.
-
-## Fixed points and GraphRun terminal states
-
-The Runtime computes a backward closure from the target Slots. A GraphRun can reach `STABLE_SUCCESS` only when the closure has no pending Activations, running Attempts, failures, blocks, writer conflicts, or materialization errors, and every target Slot has a valid Head.
-
-Therefore:
-
-- “No Rule is runnable” is not success;
-- an old file is not proof that the target is fresh;
-- feedback loops use new Revisions to trigger the next round and need no Loop node;
-- oscillation, exhausted budgets, missing Sources, and Guard errors retain distinct terminal states.
+All three share Slot and Rule dataflow, so they compose in the same graph.

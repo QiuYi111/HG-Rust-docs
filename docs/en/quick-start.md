@@ -1,94 +1,84 @@
-<div class="language-switch"><a href="../../zh/quick-start/">中文</a> · <strong>English</strong></div>
-
 # Quick Start
 
-This tutorial imports one input file, produces a greeting file, and then shows how a repeated run can reuse its evidence.
+This run uses one Shell Rule and requires no agent account. You will create an output Revision, then observe Receipt reuse on the second run.
 
-## Prepare `hg`
+## Prepare
 
-This guide assumes that `hg` is installed and available in your terminal. Confirm the version first:
+You need the Rust toolchain, Git, and a Unix-like shell.
 
 ```bash
-hg --version
+git clone https://github.com/QiuYi111/HG-Rust.git
+cd HG-Rust
+cargo build -p hg-cli --bin hg
+export PATH="$PWD/target/debug:$PATH"
 ```
 
-If the command is unavailable, install the HG-Rust CLI distribution for your operating system before continuing.
+Run `hg --help`. The command list should include `init`, `put`, `run`, `status`, and `materialize`.
 
-## 1. Create a project
+## Open the first graph
+
+The repository includes a minimal recipe. Enter its directory and initialize runtime state.
 
 ```bash
-mkdir hg-quickstart
-cd hg-quickstart
+cd examples/recipes/minimal-reconciliation
 hg init --project .
 ```
 
-Replace the project’s `harness.yaml` with:
+Its `harness.yaml` contains two Slots and one Rule.
 
 ```yaml
-version: 1
-project:
-  name: quickstart
-  default_targets: [greeting]
-
 slots:
   request: { kind: file, path: request.txt }
   greeting: { kind: file, path: greeting.md }
-
 rules:
-  - id: create_greeting
+  - id: greet
     in: [request]
     out: [greeting]
-    run: "printf '# Hello\\n\\nWelcome to HarnessGraph.\\n' > out/greeting"
+    run: "{ printf '# Hello\\n\\n'; cat in/request; } > out/greeting"
 ```
 
-The configuration declares two Slots and one Rule: `request` is the input, `greeting` is the desired result, and the Rule transforms the input into that result.
+## Import the input
 
-## 2. Import the input and check the graph
+`put` commits the workspace file as a new Revision of `request`.
 
 ```bash
-printf 'A first reconciliation project.\n' > request.txt
 hg put request request.txt --project .
-hg check --project . --strict
+hg status --project .
 ```
 
-`hg put` records the input as a Revision. `hg check` parses and validates the graph without executing a Rule.
+The status output should show a Revision for `request` while `greeting` still needs to be produced.
 
-## 3. Plan and run
+## Reconcile the target
 
 ```bash
-hg plan greeting --project .
+hg run greeting --project .
+hg materialize greeting --project .
+cat greeting.md
+```
+
+`run` creates an Activation for the current input frontier, executes `greet`, and commits a `greeting` Revision. `materialize` projects it to the declared workspace path. The file should begin with `# Hello`.
+
+## Observe reuse
+
+Run the same target again without changing the input.
+
+```bash
+hg run greeting --project .
+```
+
+The Shell command does not need to run again. The current frontier already has a successful Receipt and the target is current.
+
+## Make downstream state stale
+
+Change `request.txt`, import it, and run again.
+
+```bash
+printf 'Welcome to HarnessGraph.\n' > request.txt
+hg put request request.txt --project .
 hg run greeting --project .
 hg materialize greeting --project .
 ```
 
-After the run, `greeting.md` is the materialized file for the output Slot. The kernel also stores its Revision and Receipt.
+The new `request` Revision forms a new Activation, so `greet` executes again. You have completed the smallest reconciliation cycle.
 
-## 4. Inspect status and explanation
-
-```bash
-hg status --project .
-hg explain greeting --project .
-hg artifact history greeting --project .
-```
-
-Use `status` to ask “is it stable now?”, `explain` to ask “why did it run or not run?”, and `artifact history` to inspect the Slot’s versions.
-
-## 5. Observe reuse
-
-Run the same target again:
-
-```bash
-hg run greeting --project .
-```
-
-When the input Revision and Rule contract are unchanged, the existing Receipt proves that the result can be reused.
-
-## Next steps
-
-- Read [Core philosophy](principles.md) to understand the design.
-- Read the [Configuration reference](configuration-reference.md) to write a complete graph.
-- Choose a complete workflow from the [four hands-on tutorials](cases/index.md) for approval, Agents, recovery, or concurrency.
-
-!!! note "Inputs and materialization"
-
-    A workspace file can be deleted or edited by hand. Use `hg drift` to inspect the difference, then `hg materialize` to restore the current Head.
+Continue with the [Pomodoro tutorial](tutorials/pomodoro.md), which adds agent critique feedback and revision-bound human approval to the same semantics.

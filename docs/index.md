@@ -1,23 +1,36 @@
-<div class="language-switch"><strong>Choose a language</strong> · <a href="zh/">中文</a> · <a href="en/">English</a></div>
-
-<section class="hero" aria-labelledby="page-title">
-  <p class="eyebrow">HARNESSGRAPH KERNEL · 0.1</p>
-  <h1 id="page-title">Verifiable results for automation.</h1>
-  <p class="lede">Start with four hands-on workflows. Learn how HG turns changing inputs, human decisions, Agents, tools, and checks into results you can hand over.</p>
-  <div class="action-row">
-    <a class="md-button md-button--primary" href="zh/cases/index.md">中文实操教程</a>
-    <a class="md-button" href="en/cases/index.md">English tutorials</a>
-  </div>
-</section>
-
-<div class="diagram">
-  <img src="assets/core-loop.svg" alt="The reconciliation loop from a desired result through verification, versioning, reuse, and explanation" />
+<div class="hg-hero">
+  <img src="assets/banner.jpg" alt="HarnessGraph, build an agent graph with 2 primitives">
 </div>
 
-## Start here
+<p class="hg-kicker">Artifact-native reconciliation</p>
 
-- [四个实操教程](zh/cases/index.md)：从学习手册、播客制作、工程迭代和 CAD 发布开始，一步一步搭出真实工作流。
-- [Four hands-on tutorials](en/cases/index.md)：follow the same four workflows in English.
-- [Quick Start](zh/quick-start.md)：先用一个最小项目熟悉命令，再进入综合案例。
+# Build an agent graph with 2 primitives
 
-HG-Rust is organized around a small author model. The tutorials introduce the technical names only when you need them, then show the result immediately.
+<p class="hg-lede">HarnessGraph lets you describe the artifacts you want and the rules that can produce them. The kernel keeps reconciling those facts until the requested output is current.</p>
+
+<div class="hg-actions">
+  <a class="hg-button hg-button--primary" href="zh/quick-start/">中文 Quick Start</a>
+  <a class="hg-button" href="en/quick-start/">English Quick Start</a>
+  <a class="hg-button" href="zh/principles/">阅读核心哲学</a>
+</div>
+
+<div class="hg-grid">
+  <div class="hg-card">
+    <h3>Slot</h3>
+    <p>A named place for an artifact. Each committed change becomes an immutable Revision.</p>
+  </div>
+  <div class="hg-card">
+    <h3>Rule</h3>
+    <p>A declaration that reads Slots and writes Slots. Dependencies come from these reads and writes.</p>
+  </div>
+  <div class="hg-card">
+    <h3>Reconcile</h3>
+    <p>The kernel finds stale outputs, runs the eligible Rules, and records what happened.</p>
+  </div>
+  <div class="hg-card">
+    <h3>Derived graph</h3>
+    <p>Branches, joins, retries, and loops follow from data dependencies. They are not separate node types.</p>
+  </div>
+</div>
+
+The documentation is maintained in Chinese and English with the same page structure. Choose a language above, then follow the Quick Start to run a deterministic graph without an agent account.
