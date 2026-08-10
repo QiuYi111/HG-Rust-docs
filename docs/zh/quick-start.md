@@ -4,18 +4,18 @@
 
 ## 准备
 
-需要 Node.js 18 或更高版本、npm、Git 和一个类 Unix shell。先安装预编译的 `hg`：
+需要 Node.js 18 或更高版本、npm 和一个类 Unix shell。先安装预编译的 `hg`：
 
 ```bash
 npm install --global harnessgraph
 hg --version
 ```
 
-再取得案例：
+创建一个空目录：
 
 ```bash
-git clone https://github.com/QiuYi111/HG-Rust.git
-cd HG-Rust
+mkdir hg-hello
+cd hg-hello
 ```
 
 运行 `hg --help` 后应看到 `init`、`put`、`run`、`status` 与 `materialize` 等命令。
@@ -23,16 +23,11 @@ cd HG-Rust
 
 ## 创建第一张图
 
-仓库已经提供最小案例。先进入目录并初始化运行时状态。
+先写入输入文件和图定义。
 
 ```bash
-cd examples/recipes/minimal-reconciliation
-hg init --project .
-```
-
-案例中的 `harness.yaml` 只有两个 Slot 和一条 Rule。
-
-```yaml
+printf 'Welcome to HarnessGraph.\n' > request.txt
+cat > harness.yaml <<'YAML'
 slots:
   request: { kind: file, path: request.txt }
   greeting: { kind: file, path: greeting.md }
@@ -41,6 +36,13 @@ rules:
     in: [request]
     out: [greeting]
     run: "{ printf '# Hello\\n\\n'; cat in/request; } > out/greeting"
+YAML
+```
+
+这个 `harness.yaml` 只有两个 Slot 和一条 Rule。现在初始化运行时状态。
+
+```bash
+hg init --project .
 ```
 
 ## 导入输入

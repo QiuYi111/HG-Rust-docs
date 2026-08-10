@@ -18,7 +18,7 @@ hg plan <TARGET> --project <RECIPE>
 
 ## 再跑语义配方
 
-仓库中的 [`examples/recipes`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/recipes) 覆盖最小收敛、条件门、重试恢复、Human Rule、Effect 与缓存失效。[`examples/graph-semantics`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/graph-semantics) 另有并行扇出汇合、8 字循环、耦合循环、分支切换与闭包隔离。每个目录都可以独立初始化和运行。
+配套案例中的 `examples/recipes` 覆盖最小收敛、条件门、重试恢复、Human Rule、Effect 与缓存失效。`examples/graph-semantics` 另有并行扇出汇合、8 字循环、耦合循环、分支切换与闭包隔离。每个目录都可以独立初始化和运行。
 
 完整的怪图回归集中在 Rust 集成测试中。下面的命令运行调度、循环与真实案例的确定性部分。
 

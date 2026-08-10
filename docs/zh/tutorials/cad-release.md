@@ -21,4 +21,4 @@ scripts/test-real-world-cases.sh cad-release live
 
 先用 contract 检查图与门。live 需要 KiCad、ngspice 和 LibreOffice。输出只是工作流资格证据，不代表实物设计已经获得制造认证。
 
-依赖与完整规则见案例 [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/real-world/cad-release) 和 [`harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/real-world/cad-release/harness.yaml)。
+依赖与完整规则见案例目录的 `README.md` 和 `harness.yaml`。

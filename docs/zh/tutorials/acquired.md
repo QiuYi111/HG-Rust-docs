@@ -34,4 +34,4 @@ scripts/test-real-world-cases.sh acquired-podcast contract
 scripts/test-real-world-cases.sh acquired-podcast live
 ```
 
-live 会访问每条 Rule 声明允许的域名，需要可用的 Codex 凭据与网络。每份研究至少要有两个来源，否则门不会通过。配置与锁定信息见案例 [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/04-acquired-podcast) 和 [`case.lock.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/04-acquired-podcast/case.lock.yaml)。
+live 会访问每条 Rule 声明允许的域名，需要可用的 Codex 凭据与网络。每份研究至少要有两个来源，否则门不会通过。配置与锁定信息见案例目录的 `README.md` 和 `case.lock.yaml`。

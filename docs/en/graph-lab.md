@@ -18,7 +18,7 @@ hg plan <TARGET> --project <RECIPE>
 
 ## Run semantic recipes
 
-The repository's [`examples/recipes`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/recipes) cover minimal reconciliation, conditional gates, retry recovery, Human Rules, Effects, and cache invalidation. [`examples/graph-semantics`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/graph-semantics) adds parallel fan-out and join, a figure-eight loop, coupled loops, guarded branch switching, and closure isolation. Each directory can be initialized and run independently.
+The companion `examples/recipes` directory covers minimal reconciliation, conditional gates, retry recovery, Human Rules, Effects, and cache invalidation. `examples/graph-semantics` adds parallel fan-out and join, a figure-eight loop, coupled loops, guarded branch switching, and closure isolation. Each directory can be initialized and run independently.
 
 Rust integration tests hold the larger unusual-graph regressions. The following commands run deterministic scheduler, loop, and case coverage.
 

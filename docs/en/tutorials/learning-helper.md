@@ -32,6 +32,6 @@ The live path calls agents, builds a DOCX, renders it, and runs an OCR check.
 scripts/test-real-world-cases.sh learning-helper live
 ```
 
-It requires the Documents and GLM-OCR environment variables listed in the case [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/02-learning-helper). Missing dependencies fail closed instead of turning a skipped check into a success.
+It requires the Documents and GLM-OCR environment variables listed in the case `README.md`. Missing dependencies fail closed instead of turning a skipped check into a success.
 
-See the complete graph in [`harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/02-learning-helper/harness.yaml).
+See the complete graph in `examples/02-learning-helper/harness.yaml`.

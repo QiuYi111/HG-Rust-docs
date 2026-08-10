@@ -39,4 +39,4 @@ Start with the [Quick Start](quick-start.md). It uses one deterministic Shell Ru
 
 Then read [Core philosophy](principles.md) and [Two primitives](model.md). If loops are your immediate concern, go directly to the [Pomodoro tutorial](tutorials/pomodoro.md). Parallelism, conditions, joins, and unusual topologies live in the [Graph semantics lab](graph-lab.md).
 
-The current kernel and runnable examples live in [QiuYi111/HG-Rust](https://github.com/QiuYi111/HG-Rust). Commands and identifiers in this site track that repository.
+The installation page provides the public distribution. Tutorial commands, Slots, and Rule identifiers track the current release.

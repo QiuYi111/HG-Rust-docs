@@ -32,4 +32,4 @@ hg materialize roadmap --project .
 
 Live mode currently needs macOS, iTerm2, and an authenticated `codex` CLI. Remove `HG_GRILL_MODE=mock` and run `hg run roadmap --project .`. Continue the discussion in the new window until the agent has written both outputs. Enter `/exit` to let the parent Attempt validate and commit them.
 
-Current launcher and recovery limits are listed in the case [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/03-interactive-grill).
+Current launcher and recovery limits are listed in the case directory's `README.md`.

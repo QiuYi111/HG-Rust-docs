@@ -32,4 +32,4 @@ hg materialize roadmap --project .
 
 真实模式目前需要 macOS、iTerm2 和已登录的 `codex` CLI。去掉 `HG_GRILL_MODE=mock` 后执行 `hg run roadmap --project .`。新窗口打开后可以连续讨论，直到 Agent 写好两个输出。输入 `/exit` 后，父 Attempt 才会继续提交。
 
-当前限制与会话恢复边界记录在案例 [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/03-interactive-grill)。
+当前限制与会话恢复边界记录在案例目录的 `README.md`。

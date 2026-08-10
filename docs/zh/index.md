@@ -39,4 +39,4 @@ HarnessGraph 换了一个起点。项目中的计划、代码、评审、批准�
 
 接着阅读 [核心哲学](principles.md) 和 [两个原语](model.md)。如果你更关心循环，直接进入 [番茄钟教程](tutorials/pomodoro.md)。并行、条件、汇合与更奇怪的拓扑集中在 [图语义实验室](graph-lab.md)。
 
-当前内核与案例源码位于 [QiuYi111/HG-Rust](https://github.com/QiuYi111/HG-Rust)。文档中的命令和 Slot、Rule 名称均以该仓库为准。
+安装页提供公开发行包；教程中的命令、Slot 与 Rule 名称均与当前发行版本保持一致。

@@ -26,4 +26,4 @@ scripts/test-real-world-cases.sh harness-lifecycle contract
 scripts/test-real-world-cases.sh harness-lifecycle live
 ```
 
-live 使用现有 Codex 与 OpenCode 凭据句柄。凭据不会复制进 Slot、Receipt 或最终仓库。完整规则见 [`harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/05-harness-lifecycle/harness.yaml)。
+live 使用现有 Codex 与 OpenCode 凭据句柄。凭据不会复制进 Slot、Receipt 或最终仓库。完整规则见 `examples/05-harness-lifecycle/harness.yaml`。

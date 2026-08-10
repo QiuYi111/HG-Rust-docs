@@ -1,3 +1,9 @@
+---
+hide:
+  - navigation
+  - toc
+---
+
 <div class="hg-hero">
   <img src="assets/banner.jpg" alt="HarnessGraph, build an agent graph with 2 primitives">
 </div>

@@ -4,18 +4,18 @@ This run uses one Shell Rule and requires no agent account. You will create an o
 
 ## Prepare
 
-You need Node.js 18 or newer, npm, Git, and a Unix-like shell. Install the prebuilt `hg` first:
+You need Node.js 18 or newer, npm, and a Unix-like shell. Install the prebuilt `hg` first:
 
 ```bash
 npm install --global harnessgraph
 hg --version
 ```
 
-Then get the examples:
+Create an empty directory:
 
 ```bash
-git clone https://github.com/QiuYi111/HG-Rust.git
-cd HG-Rust
+mkdir hg-hello
+cd hg-hello
 ```
 
 Run `hg --help`. The command list should include `init`, `put`, `run`, `status`, and `materialize`.
@@ -23,16 +23,11 @@ See the [installation guide](installation.md) if the terminal cannot find `hg`.
 
 ## Open the first graph
 
-The repository includes a minimal recipe. Enter its directory and initialize runtime state.
+Write the input file and graph definition.
 
 ```bash
-cd examples/recipes/minimal-reconciliation
-hg init --project .
-```
-
-Its `harness.yaml` contains two Slots and one Rule.
-
-```yaml
+printf 'Welcome to HarnessGraph.\n' > request.txt
+cat > harness.yaml <<'YAML'
 slots:
   request: { kind: file, path: request.txt }
   greeting: { kind: file, path: greeting.md }
@@ -41,6 +36,13 @@ rules:
     in: [request]
     out: [greeting]
     run: "{ printf '# Hello\\n\\n'; cat in/request; } > out/greeting"
+YAML
+```
+
+This `harness.yaml` contains two Slots and one Rule. Initialize runtime state.
+
+```bash
+hg init --project .
 ```
 
 ## Import the input

@@ -1,10 +1,6 @@
 site_name: HarnessGraph
 site_description: Build an agent graph with two primitives.
 site_url: https://qiuyi111.github.io/HG-Rust-docs/
-repo_name: QiuYi111/HG-Rust
-repo_url: https://github.com/QiuYi111/HG-Rust
-edit_uri: edit/main/docs/
-
 exclude_docs: |
   en/cases/**
   en/examples/**
@@ -34,8 +30,11 @@ theme:
   features:
     - navigation.sections
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - navigation.indexes
+    - navigation.path
+    - navigation.footer
     - search.highlight
     - search.suggest
     - content.code.copy
@@ -44,33 +43,36 @@ theme:
     scheme: default
 
 nav:
-  - Home: index.md
+  - Overview: index.md
   - 中文:
-      - 项目首页: zh/index.md
-      - 核心哲学: zh/principles.md
-      - 安装: zh/installation.md
-      - Quick Start: zh/quick-start.md
-      - 核心模型:
+      - 中文首页: zh/index.md
+      - 开始:
+          - 安装: zh/installation.md
+          - Quick Start: zh/quick-start.md
+      - 理解 HarnessGraph:
+          - 核心哲学: zh/principles.md
           - 两个原语: zh/model.md
           - 图如何自然派生: zh/composition.md
           - 配置与执行器: zh/configuration.md
-      - 教程案例:
-          - 案例路线: zh/tutorials/index.md
+      - 实践教程:
+          - 教程路线: zh/tutorials/index.md
           - 番茄钟: zh/tutorials/pomodoro.md
           - Learning Helper: zh/tutorials/learning-helper.md
           - Grill: zh/tutorials/grill.md
           - Acquired: zh/tutorials/acquired.md
           - Harness Lifecycle: zh/tutorials/harness.md
           - CAD Release: zh/tutorials/cad-release.md
-      - 图语义实验室: zh/graph-lab.md
-      - CLI 与运行: zh/reference.md
-      - 发布说明: zh/release.md
+      - 验证与参考:
+          - 图语义实验室: zh/graph-lab.md
+          - CLI 与运行: zh/reference.md
+          - 发布说明: zh/release.md
   - English:
-      - Project home: en/index.md
-      - Core philosophy: en/principles.md
-      - Installation: en/installation.md
-      - Quick Start: en/quick-start.md
-      - Core model:
+      - English home: en/index.md
+      - Get started:
+          - Installation: en/installation.md
+          - Quick Start: en/quick-start.md
+      - Understand HarnessGraph:
+          - Core philosophy: en/principles.md
           - Two primitives: en/model.md
           - How graphs emerge: en/composition.md
           - Configuration and executors: en/configuration.md
@@ -82,9 +84,10 @@ nav:
           - Acquired: en/tutorials/acquired.md
           - Harness Lifecycle: en/tutorials/harness.md
           - CAD Release: en/tutorials/cad-release.md
-      - Graph semantics lab: en/graph-lab.md
-      - CLI and operations: en/reference.md
-      - Release notes: en/release.md
+      - Validate and reference:
+          - Graph semantics lab: en/graph-lab.md
+          - CLI and operations: en/reference.md
+          - Release notes: en/release.md
 
 markdown_extensions:
   - admonition
@@ -108,5 +111,12 @@ extra_css:
 
 extra:
   generator: false
+  alternate:
+    - name: 中文
+      link: /HG-Rust-docs/zh/
+      lang: zh
+    - name: English
+      link: /HG-Rust-docs/en/
+      lang: en
 
 copyright: Copyright © 2026 HarnessGraph contributors

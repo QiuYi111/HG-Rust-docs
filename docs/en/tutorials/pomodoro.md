@@ -14,7 +14,7 @@ When the Critic writes `accept`, the `coder` condition is no longer eligible. On
 
 ## Run the deterministic contract
 
-From the HG-Rust repository root, run the following test.
+Run this test from the companion examples workspace root.
 
 ```bash
 cargo test -p hg-cli --test m18_pomodoro_loop -- --nocapture
@@ -30,9 +30,9 @@ A passing result proves that feedback Revisions create another round, acceptance
 
 ## Inspect and run the live graph
 
-Open [`examples/01-pomodoro/harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/01-pomodoro/harness.yaml). Compare the `in`, `out`, and `when` fields on `coder`, `critique`, and `request_approval`.
+Open `examples/01-pomodoro/harness.yaml`. Compare the `in`, `out`, and `when` fields on `coder`, `critique`, and `request_approval`.
 
-The live run needs a working Codex executor, Git, and `jq`. Its [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/01-pomodoro) contains complete initialization commands. When the Human Rule becomes pending, find its Activation and submit the decision.
+The live run needs a working Codex executor, Git, and `jq`. The case directory's `README.md` contains complete initialization commands. When the Human Rule becomes pending, find its Activation and submit the decision.
 
 ```bash
 hg human pending --project . --output json

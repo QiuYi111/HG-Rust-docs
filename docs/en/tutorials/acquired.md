@@ -34,4 +34,4 @@ Use the live path when you need to validate real research.
 scripts/test-real-world-cases.sh acquired-podcast live
 ```
 
-Live execution visits domains allowed by each Rule and needs working Codex credentials and network access. Every research Artifact needs at least two sources before the gate passes. See the case [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/04-acquired-podcast) and [`case.lock.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/04-acquired-podcast/case.lock.yaml).
+Live execution visits domains allowed by each Rule and needs working Codex credentials and network access. Every research Artifact needs at least two sources before the gate passes. See the case directory's `README.md` and `case.lock.yaml`.

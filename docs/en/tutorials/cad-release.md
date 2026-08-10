@@ -21,4 +21,4 @@ scripts/test-real-world-cases.sh cad-release live
 
 Use contract mode to inspect graph and gate behavior first. Live mode needs KiCad, ngspice, and LibreOffice. The outputs qualify the workflow; they do not certify a physical design for manufacturing.
 
-Dependencies and complete Rules live in the case [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/real-world/cad-release) and [`harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/real-world/cad-release/harness.yaml).
+Dependencies and complete Rules live in the case directory's `README.md` and `harness.yaml`.

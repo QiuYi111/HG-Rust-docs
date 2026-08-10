@@ -14,7 +14,7 @@ Critic 写出 `accept` 后，`coder` 的 `when` 不再成立。此时 `request_a
 
 ## 先跑确定性合约
 
-在 HG-Rust 仓库根目录执行。
+在配套案例工作区根目录执行。
 
 ```bash
 cargo test -p hg-cli --test m18_pomodoro_loop -- --nocapture
@@ -30,9 +30,9 @@ coder → critique → coder → critique
 
 ## 查看真实配置
 
-打开 [`examples/01-pomodoro/harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/01-pomodoro/harness.yaml)，重点查看 `coder`、`critique` 和 `request_approval` 三条 Rule 的 `in`、`out` 与 `when`。
+打开 `examples/01-pomodoro/harness.yaml`，重点查看 `coder`、`critique` 和 `request_approval` 三条 Rule 的 `in`、`out` 与 `when`。
 
-真实运行需要可用的 Codex 执行器、Git 和 `jq`。完整初始化命令位于案例的 [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/01-pomodoro)。运行到 Human Rule 后，用下面的命令取得当前 Activation，再提交决定。
+真实运行需要可用的 Codex 执行器、Git 和 `jq`。完整初始化命令位于案例目录的 `README.md`。运行到 Human Rule 后，用下面的命令取得当前 Activation，再提交决定。
 
 ```bash
 hg human pending --project . --output json

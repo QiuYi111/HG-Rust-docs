@@ -26,4 +26,4 @@ The contract verifies stale human-answer fencing, a second decision for core ris
 scripts/test-real-world-cases.sh harness-lifecycle live
 ```
 
-Live mode consumes existing Codex and OpenCode credential handles. It does not copy credentials into Slots, Receipts, or the final repository. See the complete [`harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/05-harness-lifecycle/harness.yaml).
+Live mode consumes existing Codex and OpenCode credential handles. It does not copy credentials into Slots, Receipts, or the final repository. See the complete `examples/05-harness-lifecycle/harness.yaml`.

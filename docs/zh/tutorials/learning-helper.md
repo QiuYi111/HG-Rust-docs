@@ -32,6 +32,6 @@ scripts/test-real-world-cases.sh learning-helper contract
 scripts/test-real-world-cases.sh learning-helper live
 ```
 
-它需要案例 [`README`](https://github.com/QiuYi111/HG-Rust/tree/main/examples/02-learning-helper) 中列出的 Documents 与 GLM-OCR 环境变量。依赖缺失时，脚本会明确失败，不会把跳过检查当作成功。
+它需要案例 `README.md` 中列出的 Documents 与 GLM-OCR 环境变量。依赖缺失时，脚本会明确失败，不会把跳过检查当作成功。
 
-完整图见 [`harness.yaml`](https://github.com/QiuYi111/HG-Rust/blob/main/examples/02-learning-helper/harness.yaml)。
+完整图见 `examples/02-learning-helper/harness.yaml`。
