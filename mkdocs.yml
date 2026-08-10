@@ -48,6 +48,7 @@ nav:
   - 中文:
       - 项目首页: zh/index.md
       - 核心哲学: zh/principles.md
+      - 安装: zh/installation.md
       - Quick Start: zh/quick-start.md
       - 核心模型:
           - 两个原语: zh/model.md
@@ -67,6 +68,7 @@ nav:
   - English:
       - Project home: en/index.md
       - Core philosophy: en/principles.md
+      - Installation: en/installation.md
       - Quick Start: en/quick-start.md
       - Core model:
           - Two primitives: en/model.md

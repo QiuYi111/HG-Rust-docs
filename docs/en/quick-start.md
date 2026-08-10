@@ -4,16 +4,22 @@ This run uses one Shell Rule and requires no agent account. You will create an o
 
 ## Prepare
 
-You need the Rust toolchain, Git, and a Unix-like shell.
+You need Node.js 18 or newer, npm, Git, and a Unix-like shell. Install the prebuilt `hg` first:
+
+```bash
+npm install --global harnessgraph
+hg --version
+```
+
+Then get the examples:
 
 ```bash
 git clone https://github.com/QiuYi111/HG-Rust.git
 cd HG-Rust
-cargo build -p hg-cli --bin hg
-export PATH="$PWD/target/debug:$PATH"
 ```
 
 Run `hg --help`. The command list should include `init`, `put`, `run`, `status`, and `materialize`.
+See the [installation guide](installation.md) if the terminal cannot find `hg`.
 
 ## Open the first graph
 

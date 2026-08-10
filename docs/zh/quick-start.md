@@ -4,16 +4,22 @@
 
 ## 准备
 
-需要 Rust 工具链、Git 和一个类 Unix shell。
+需要 Node.js 18 或更高版本、npm、Git 和一个类 Unix shell。先安装预编译的 `hg`：
+
+```bash
+npm install --global harnessgraph
+hg --version
+```
+
+再取得案例：
 
 ```bash
 git clone https://github.com/QiuYi111/HG-Rust.git
 cd HG-Rust
-cargo build -p hg-cli --bin hg
-export PATH="$PWD/target/debug:$PATH"
 ```
 
 运行 `hg --help` 后应看到 `init`、`put`、`run`、`status` 与 `materialize` 等命令。
+如果终端找不到 `hg`，请看[安装指南](installation.md)。
 
 ## 创建第一张图
 
